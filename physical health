@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Physical Health</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #e6ffe6; text-align: center; padding: 20px; }
+        .content-box { background-color: #d4edda; padding: 20px; margin: 10px; border-radius: 10px; }
+        .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Physical Health 💪</h1>
+    <div class="content-box">
+        <p>My physical health? Totally average—nothing wild here! Never hit the gym, but I’ve got plans to start after 12th grade. Watch out, world! 😎 For now, I can lift 30kg—my max, and I’m kinda proud of it. 💪</p>
+        <p>Thing is, I’m not super active. School’s a trek—two hours there, two hours back. That’s four hours of just chilling, tunes in my ears. 🎶 Then, seven hours vanish at school. Poof! Home time? Four hours left (minus sleep) for homework, fun, and—yep—my phone. 📱 Same old, every day!</p>
+    </div>
+    <div class="back" onclick="window.location.href='health.html'">Back ⬅️</div>
+</body>
+</html>
