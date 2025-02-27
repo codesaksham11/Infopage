@@ -2,17 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health Stuff</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #e6ffe6; text-align: center; padding: 20px; }
-        .box { background-color: #d4edda; padding: 20px; margin: 10px; border-radius: 10px; cursor: pointer; }
-        .box:hover { background-color: #c3e6cb; }
-        .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #e6ffe6; 
+            text-align: center; 
+            padding: 20px; 
+            margin: 0; 
+        }
+        .box { 
+            background-color: #d4edda; 
+            padding: 15px; 
+            margin: 10px auto; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            max-width: 90%; 
+            box-sizing: border-box; 
+        }
+        .box:hover { 
+            background-color: #c3e6cb; 
+        }
+        .back { 
+            background-color: #ff9999; 
+            padding: 10px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            display: inline-block; 
+            margin-top: 15px; 
+        }
+        h1 { 
+            color: #ff4500; 
+            font-size: 1.5rem; 
+        }
+        p { 
+            font-size: 1rem; 
+            line-height: 1.5; 
+            margin: 0 10px; 
+        }
+        @media (max-width: 768px) {
+            .box { padding: 10px; font-size: 0.9rem; }
+            h1 { font-size: 1.2rem; }
+            p { font-size: 0.9rem; }
+        }
     </style>
 </head>
 <body>
     <h1>So, you’re curious about my health? 🩺</h1>
-    <p>Alright, what do you wanna dig into?</p>
+    <p>Alright, what do you wanna dig into? 😊</p>
     <div class="box" onclick="window.location.href='mental-health.html'">Mental Health 🧠</div>
     <div class="box" onclick="window.location.href='physical-health.html'">Physical Health 💪</div>
     <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
