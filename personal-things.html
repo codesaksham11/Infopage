@@ -2,22 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Things</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0e68c; text-align: center; padding: 20px; }
-        .box { background-color: #ffdab9; padding: 20px; margin: 10px; border-radius: 10px; cursor: pointer; }
-        .box:hover { background-color: #ffdead; }
-        .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f0e68c; 
+            text-align: center; 
+            padding: 20px; 
+            margin: 0; 
+        }
+        .box { 
+            background-color: #ffdab9; 
+            padding: 15px; 
+            margin: 10px auto; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            max-width: 90%; 
+            box-sizing: border-box; 
+        }
+        .box:hover { 
+            background-color: #ffdead; 
+        }
+        .back { 
+            background-color: #ff9999; 
+            padding: 10px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            display: inline-block; 
+            margin-top: 15px; 
+        }
+        h1 { 
+            color: #ff4500; 
+            font-size: 1.5rem; 
+        }
+        p { 
+            font-size: 1rem; 
+            line-height: 1.5; 
+            margin: 0 10px; 
+        }
+        @media (max-width: 768px) {
+            .box { padding: 10px; font-size: 0.9rem; }
+            h1 { font-size: 1.2rem; }
+            p { font-size: 0.9rem; }
+        }
     </style>
 </head>
 <body>
     <h1>Personal Things—Sneaky, huh? 🤫</h1>
-    <p>Wanna get the inside scoop? Info’s limited, but pick one anyway!</p>
-    <div class="box" onclick="window.location.href='embarrassing-moment.html'">Most Embarrassing Moment 😳</div>
-    <div class="box" onclick="window.location.href='fav-celeb.html'">Favorite Celebrity 🌟</div>
-    <div class="box" onclick="window.location.href='fav-singer.html'">Favorite Singer 🎤</div>
-    <div class="box" onclick="window.location.href='happiest-moment.html'">Happiest Moment 😊</div>
-    <div class="box" onclick="window.location.href='personal-info.html'">Personal Info ℹ️</div>
+    <p>So, you want some personal details? 🤫 I don’t share too much, but here’s what I can offer. What would you like to know? 😊</p>
+    <div class="box" onclick="window.location.href='embarrassing-moment.html'">My Most Embarrassing Moment 😳</div>
+    <div class="box" onclick="window.location.href='fav-celeb.html'">My Favorite Celebrity 🌟</div>
+    <div class="box" onclick="window.location.href='fav-singer.html'">My Favorite Singer 🎤</div>
+    <div class="box" onclick="window.location.href='happiest-moment.html'">My Happiest Moment 😊</div>
+    <div class="box" onclick="window.location.href='personal-info.html'">Some Personal Info ℹ️</div>
     <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
 </body>
 </html>
