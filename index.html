@@ -5,15 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saksham's World</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f8ff; text-align: center; padding: 20px; margin: 0; }
-        .box { background-color: #ffe4e1; padding: 15px; margin: 10px auto; border-radius: 10px; cursor: pointer; max-width: 90%; box-sizing: border-box; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f0f8ff; 
+            text-align: center; 
+            padding: 20px; 
+            margin: 0; 
+            opacity: 0; /* For fade-in */
+            animation: fadeIn 1s forwards; /* Fade-in animation */
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        .box { 
+            background-color: #ffe4e1; 
+            padding: 15px; 
+            margin: 10px auto; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            max-width: 90%; 
+            box-sizing: border-box; 
+        }
         .box:hover { background-color: #ffcccb; }
         h1 { color: #ff4500; font-size: 1.5rem; }
         p { font-size: 1rem; line-height: 1.5; margin: 0 10px; }
+        .photo { 
+            max-width: 100%; 
+            height: auto; 
+            border-radius: 10px; 
+            margin-top: 20px; 
+        }
         @media (max-width: 768px) {
             .box { padding: 10px; font-size: 0.9rem; }
             h1 { font-size: 1.2rem; }
             p { font-size: 0.9rem; }
+            .photo { max-width: 80%; }
         }
     </style>
 </head>
@@ -26,5 +52,6 @@
     <div class="box" onclick="window.location.href='social-life.html'">Social Life 🌍</div>
     <div class="box" onclick="window.location.href='personal-things.html'">Personal Things 🤫</div>
     <div class="box" onclick="window.location.href='personalised-info.html'">Personalised Info 🤝</div>
+    <img src="images/IMG_20250226_165425.jpg" alt="Saksham" class="photo">
 </body>
 </html>
