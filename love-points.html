@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Points Chart</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #fffacd; text-align: center; padding: 20px; margin: 0; }
+        .content-box { background-color: #ffe4b5; padding: 15px; margin: 10px auto; border-radius: 10px; max-width: 90%; box-sizing: border-box; }
+        .love-bar {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .love-fill {
+            height: 20px;
+            background-color: #ff4500;
+            text-align: right;
+            color: white;
+            padding-right: 5px;
+            transition: width 0.3s ease;
+        }
+        .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 15px; }
+        h1 { color: #ff4500; font-size: 1.5rem; }
+        p { font-size: 1rem; line-height: 1.5; margin: 0 10px; }
+        @media (max-width: 768px) {
+            .content-box { padding: 10px; font-size: 0.9rem; }
+            h1 { font-size: 1.2rem; }
+            p { font-size: 0.9rem; }
+            .love-bar { margin: 5px 0; }
+            .love-fill { height: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Love Points Chart ❤️</h1>
+    <div class="content-box">
+        <p>Discover how much I cherish my family—watch the love grow! 😊🌟</p>
+        <div class="love-bar"><div class="love-fill" style="width: 50%;">Sakshi: 5/10</div></div>
+        <div class="love-bar"><div class="love-fill" style="width: 40%;">Deepak Mama: 4/10</div></div>
+        <div class="love-bar"><div class="love-fill" style="width: 95%;">Jayanti Auntie: 9.5/10</div></div>
+        <div class="love-bar"><div class="love-fill" style="width: 80%;">Yasuda Auntie: 8/10</div></div>
+        <div class="love-bar"><div class="love-fill" style="width: 80%;">Amit Dada: 8/10</div></div>
+        <div class="love-bar"><div class="love-fill" style="width: 100%;">Mummy: 10/10</div></div>
+        <div class="love-bar"><div class="love-fill" style="width: 85%;">Aama (Mamaghar): 8.5/10</div></div>
+        <div class="love-bar"><div class="love-fill" style="width: 70%;">Dad: 7/10</div></div>
+        <div class="love-bar"><div class="love-fill" style="width: 80%;">Hajurbuwa: 8/10</div></div>
+        <div class="love-bar"><div class="love-fill" style="width: 55%;">Ashim Dada: 5.5/10</div></div>
+        <div class="love-bar"><div class="love-fill" style="width: 60%;">Thulo Buwa: 6/10</div></div>
+        <div class="love-bar"><div class="love-fill" style="width: 70%;">Thulo Mummy: 7/10</div></div>
+    </div>
+    <div class="back" onclick="window.location.href='family-details.html'">Back ⬅️</div>
+</body>
+</html>
