@@ -23,12 +23,25 @@
         .love-bar-container {
             margin: 10px 0;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .love-info {
+            flex: 1;
+            min-width: 0;
+            padding-right: 10px;
+            text-align: left;
+            font-size: 1rem;
         }
         .love-bar-bg {
+            flex: 2;
             height: 20px;
             background-color: #ddd;
             border-radius: 5px;
             overflow: hidden;
+            margin-right: 10px;
         }
         .love-bar-fill {
             height: 100%;
@@ -39,26 +52,58 @@
             position: relative;
         }
         .love-text {
-            font-size: 1rem;
+            font-size: 0.9rem;
             line-height: 20px;
             color: #fff;
             position: absolute;
             right: 5px;
         }
+        .view-photo {
+            background-color: #ff9999;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+        .view-photo:hover {
+            background-color: #ff6666;
+        }
         /* Color gradient based on points */
         .low { background-color: #ff4d4d; } /* Red for 0-5.9 */
         .medium { background-color: #ffcc00; } /* Yellow for 6-7.9 */
         .high { background-color: #00cc00; } /* Green for 8-10 */
-        .heart-icon {
-            position: absolute;
-            top: -15px;
-            right: -10px;
-            font-size: 1.5rem;
-            color: #ff0000;
-            display: none; /* Hidden by default */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
         }
-        .love-bar-container.high .heart-icon {
-            display: block; /* Show heart for points > 8 */
+        .modal-content {
+            background-color: #fffacd;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 80%;
+            text-align: center;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ff4500;
+        }
+        .modal-photo {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
         }
         .back { 
             background-color: #ff9999; 
@@ -100,8 +145,9 @@
             h1 { font-size: 1.2rem; }
             p { font-size: 0.9rem; }
             .love-bar-bg { height: 15px; }
-            .love-text { font-size: 0.9rem; line-height: 15px; }
-            .heart-icon { top: -10px; font-size: 1.2rem; }
+            .love-text { font-size: 0.8rem; line-height: 15px; }
+            .view-photo { font-size: 0.8rem; padding: 3px 8px; }
+            .modal-content { margin: 15% auto; max-width: 90%; }
             .legend { gap: 10px; font-size: 0.8rem; }
             .legend-color { width: 12px; height: 12px; }
         }
@@ -110,103 +156,232 @@
 <body>
     <h1>Love Points Chart ❤️</h1>
     <div class="content-box">
-        <p>Discover how much I cherish my family—watch the love grow! 😊🌟</p>
+        <p>Discover how much I cherish my loved ones—watch the love grow! 😊🌸</p>
         <!-- Random order of family members -->
         <div class="love-bar-container">
+            <div class="love-info">[Amit Dada = 7.7]</div>
             <div class="love-bar-bg">
-                <div class="love-bar-fill low" style="width: 50%;">
-                    <span class="love-text">Sakshi: 5/10</span>
+                <div class="love-bar-fill medium" style="width: 77%;">
+                    <span class="love-text">7.7/10</span>
                 </div>
             </div>
-            <div class="heart-icon">❤️</div>
+            <button class="view-photo" onclick="showModal('Amit Dada', 'images/img_1_1740738663616.jpg', 7.7)">View Photo</button>
         </div>
         <div class="love-bar-container">
+            <div class="love-info">[Thulo Mummy = 8]</div>
             <div class="love-bar-bg">
-                <div class="love-bar-fill medium" style="width: 40%;">
-                    <span class="love-text">Deepak Mama: 4/10</span>
+                <div class="love-bar-fill high" style="width: 80%;">
+                    <span class="love-text">8/10</span>
                 </div>
             </div>
-            <div class="heart-icon">❤️</div>
-        </div>
-        <div class="love-bar-container high">
-            <div class="love-bar-bg">
-                <div class="love-bar-fill high" style="width: 95%;">
-                    <span class="love-text">Jayanti Auntie: 9.5/10</span>
-                </div>
-            </div>
-            <div class="heart-icon">❤️</div>
-        </div>
-        <div class="love-bar-container high">
-            <div class="love-bar-bg">
-                <div class="love-bar-fill high" style="width: 100%;">
-                    <span class="love-text">Mummy: 10/10</span>
-                </div>
-            </div>
-            <div class="heart-icon">❤️</div>
+            <button class="view-photo" onclick="showModal('Thulo Mummy', 'images/img_2_1740738714056.jpg', 8)">View Photo</button>
         </div>
         <div class="love-bar-container">
+            <div class="love-info">[Diya = 7.3]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 73%;">
+                    <span class="love-text">7.3/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Diya', 'images/FB_IMG_1740738985219.jpg', 7.3)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Jayanti Auntie = 8.9]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill high" style="width: 89%;">
+                    <span class="love-text">8.9/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Jayanti Auntie', 'images/FB_IMG_1740739063605.jpg', 8.9)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Dad = 7]</div>
             <div class="love-bar-bg">
                 <div class="love-bar-fill medium" style="width: 70%;">
-                    <span class="love-text">Dad: 7/10</span>
+                    <span class="love-text">7/10</span>
                 </div>
             </div>
-            <div class="heart-icon">❤️</div>
-        </div>
-        <div class="love-bar-container high">
-            <div class="love-bar-bg">
-                <div class="love-bar-fill high" style="width: 85%;">
-                    <span class="love-text">Aama (Mamaghar): 8.5/10</span>
-                </div>
-            </div>
-            <div class="heart-icon">❤️</div>
+            <button class="view-photo" onclick="showModal('Dad', 'images/istockphoto-1409329028-612x612.jpg', 7)">View Photo</button>
         </div>
         <div class="love-bar-container">
-            <div class="love-bar-bg">
-                <div class="love-bar-fill medium" style="width: 80%;">
-                    <span class="love-text">Yasuda Auntie: 8/10</span>
-                </div>
-            </div>
-            <div class="heart-icon">❤️</div>
-        </div>
-        <div class="love-bar-container">
-            <div class="love-bar-bg">
-                <div class="love-bar-fill medium" style="width: 80%;">
-                    <span class="love-text">Amit Dada: 8/10</span>
-                </div>
-            </div>
-            <div class="heart-icon">❤️</div>
-        </div>
-        <div class="love-bar-container">
-            <div class="love-bar-bg">
-                <div class="love-bar-fill medium" style="width: 80%;">
-                    <span class="love-text">Hajurbuwa: 8/10</span>
-                </div>
-            </div>
-            <div class="heart-icon">❤️</div>
-        </div>
-        <div class="love-bar-container">
-            <div class="love-bar-bg">
-                <div class="love-bar-fill medium" style="width: 70%;">
-                    <span class="love-text">Thulo Mummy: 7/10</span>
-                </div>
-            </div>
-            <div class="heart-icon">❤️</div>
-        </div>
-        <div class="love-bar-container">
+            <div class="love-info">[Deepak Mama = 6]</div>
             <div class="love-bar-bg">
                 <div class="love-bar-fill medium" style="width: 60%;">
-                    <span class="love-text">Thulo Buwa: 6/10</span>
+                    <span class="love-text">6/10</span>
                 </div>
             </div>
-            <div class="heart-icon">❤️</div>
+            <button class="view-photo" onclick="showModal('Deepak Mama', 'images/FB_IMG_1740739042975.jpg', 6)">View Photo</button>
         </div>
         <div class="love-bar-container">
+            <div class="love-info">[Aama (mamaghar) = 9.2]</div>
             <div class="love-bar-bg">
-                <div class="love-bar-fill medium" style="width: 55%;">
-                    <span class="love-text">Ashim Dada: 5.5/10</span>
+                <div class="love-bar-fill high" style="width: 92%;">
+                    <span class="love-text">9.2/10</span>
                 </div>
             </div>
-            <div class="heart-icon">❤️</div>
+            <button class="view-photo" onclick="showModal('Aama (mamaghar)', 'images/FB_IMG_1740739160194.jpg', 9.2)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Hajurbuwa = 7.9]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 79%;">
+                    <span class="love-text">7.9/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Hajurbuwa', 'images/FB_IMG_1740739112560.jpg', 7.9)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Yasodha Auntie = 8.2]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill high" style="width: 82%;">
+                    <span class="love-text">8.2/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Yasodha Auntie', 'images/FB_IMG_1740738974848.jpg', 8.2)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Thulo Buwa = 7]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 70%;">
+                    <span class="love-text">7/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Thulo Buwa', 'images/FB_IMG_1740739533846.jpg', 7)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Ashim Dada = 7.1]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 71%;">
+                    <span class="love-text">7.1/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Ashim Dada', 'images/FB_IMG_1740739400538.jpg', 7.1)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Divyansh = 7.2]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 72%;">
+                    <span class="love-text">7.2/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Divyansh', 'images/FB_IMG_1740739017387.jpg', 7.2)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Dhaneswor Uncle = 6.9]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 69%;">
+                    <span class="love-text">6.9/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Dhaneswor Uncle', 'images/istockphoto-1409329028-612x612.jpg', 6.9)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Raaz Uncle = 7.8]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 78%;">
+                    <span class="love-text">7.8/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Raaz Uncle', 'images/FB_IMG_1740739051380.jpg', 7.8)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[G.S Uncle = 7.5]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 75%;">
+                    <span class="love-text">7.5/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('G.S Uncle', 'images/FB_IMG_1740739647440.jpg', 7.5)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Dikshita = 9]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill high" style="width: 90%;">
+                    <span class="love-text">9/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Dikshita', 'images/img_4_1740738785198.jpg', 9)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Sagina = 7.8]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 78%;">
+                    <span class="love-text">7.8/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Sagina', 'images/FB_IMG_1740739561289.jpg', 7.8)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Safal Mama = 8]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill high" style="width: 80%;">
+                    <span class="love-text">8/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Safal Mama', 'images/istockphoto-1409329028-612x612.jpg', 8)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Maiju = 7.7]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 77%;">
+                    <span class="love-text">7.7/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Maiju', 'images/FB_IMG_1740739080506.jpg', 7.7)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Nikhil Mama = 6.7]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 67%;">
+                    <span class="love-text">6.7/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Nikhil Mama', 'images/FB_IMG_1740739357828.jpg', 6.7)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Samikshya = 6.9]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 69%;">
+                    <span class="love-text">6.9/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Samikshya', 'images/istockphoto-1409329028-612x612.jpg', 6.9)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Sadikshya = 6.2]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 62%;">
+                    <span class="love-text">6.2/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Sadikshya', 'images/FB_IMG_1740739700493.jpg', 6.2)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Aama (ghar) = 8]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill high" style="width: 80%;">
+                    <span class="love-text">8/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Aama (ghar)', 'images/istockphoto-1409329028-612x612.jpg', 8)">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Sis = I don’t know]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill low" style="width: 0%;">
+                    <span class="love-text">N/A</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Sis', 'images/istockphoto-1409329028-612x612.jpg', 'N/A')">View Photo</button>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-info">[Mummy = 10]</div>
+            <div class="love-bar-bg">
+                <div class="love-bar-fill high" style="width: 100%;">
+                    <span class="love-text">10/10</span>
+                </div>
+            </div>
+            <button class="view-photo" onclick="showModal('Mummy', 'images/FB_IMG_1740739622861.jpg', 10)">View Photo</button>
         </div>
         <div class="legend">
             <div class="legend-item"><div class="legend-color bg-rose-500"></div>Low (0-5.9)</div>
@@ -215,5 +390,41 @@
         </div>
     </div>
     <div class="back" onclick="window.location.href='family-details.html'">Back ⬅️</div>
+
+    <!-- Modal for Photo Display -->
+    <div id="photoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">×</span>
+            <h2 id="modalName"></h2>
+            <img id="modalPhoto" src="" alt="Person Photo" class="modal-photo">
+            <p id="modalPoints"></p>
+        </div>
+    </div>
+
+    <script>
+        function showModal(name, photoUrl, points) {
+            var modal = document.getElementById("photoModal");
+            var modalName = document.getElementById("modalName");
+            var modalPhoto = document.getElementById("modalPhoto");
+            var modalPoints = document.getElementById("modalPoints");
+            modalName.textContent = name;
+            modalPhoto.src = photoUrl;
+            modalPoints.textContent = points === 'N/A' ? "Love Points: I don’t know 😕" : `Love Points: ${points}/10 😊`;
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("photoModal");
+            modal.style.display = "none";
+        }
+
+        // Close modal if clicked outside
+        window.onclick = function(event) {
+            var modal = document.getElementById("photoModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
