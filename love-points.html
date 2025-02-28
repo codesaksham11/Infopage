@@ -5,32 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Love Points Chart</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #fffacd; text-align: center; padding: 20px; margin: 0; }
-        .content-box { background-color: #ffe4b5; padding: 15px; margin: 10px auto; border-radius: 10px; max-width: 90%; box-sizing: border-box; }
-        .love-bar {
-            width: 100%;
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #fffacd; 
+            text-align: center; 
+            padding: 20px; 
+            margin: 0; 
+        }
+        .content-box { 
+            background-color: #ffe4b5; 
+            padding: 15px; 
+            margin: 10px auto; 
+            border-radius: 10px; 
+            max-width: 90%; 
+            box-sizing: border-box; 
+        }
+        .love-bar-container {
+            margin: 10px 0;
+            position: relative;
+        }
+        .love-bar-bg {
+            height: 20px;
             background-color: #ddd;
             border-radius: 5px;
-            margin: 10px 0;
             overflow: hidden;
         }
-        .love-fill {
-            height: 20px;
-            background-color: #ff4500;
+        .love-bar-fill {
+            height: 100%;
+            border-radius: 5px;
             text-align: right;
-            color: white;
             padding-right: 5px;
             transition: width 0.3s ease;
+            position: relative;
         }
-        .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 15px; }
-        h1 { color: #ff4500; font-size: 1.5rem; }
-        p { font-size: 1rem; line-height: 1.5; margin: 0 10px; }
+        .love-text {
+            font-size: 1rem;
+            line-height: 20px;
+            color: #fff;
+            position: absolute;
+            right: 5px;
+        }
+        /* Color gradient based on points */
+        .low { background-color: #ff4d4d; } /* Red for 0-5.9 */
+        .medium { background-color: #ffcc00; } /* Yellow for 6-7.9 */
+        .high { background-color: #00cc00; } /* Green for 8-10 */
+        .heart-icon {
+            position: absolute;
+            top: -15px;
+            right: -10px;
+            font-size: 1.5rem;
+            color: #ff0000;
+            display: none; /* Hidden by default */
+        }
+        .love-bar-container.high .heart-icon {
+            display: block; /* Show heart for points > 8 */
+        }
+        .back { 
+            background-color: #ff9999; 
+            padding: 10px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            display: inline-block; 
+            margin-top: 15px; 
+        }
+        h1 { 
+            color: #ff4500; 
+            font-size: 1.5rem; 
+        }
+        p { 
+            font-size: 1rem; 
+            line-height: 1.5; 
+            margin: 0 10px; 
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+        }
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+            border-radius: 50%;
+        }
         @media (max-width: 768px) {
             .content-box { padding: 10px; font-size: 0.9rem; }
             h1 { font-size: 1.2rem; }
             p { font-size: 0.9rem; }
-            .love-bar { margin: 5px 0; }
-            .love-fill { height: 15px; }
+            .love-bar-bg { height: 15px; }
+            .love-text { font-size: 0.9rem; line-height: 15px; }
+            .heart-icon { top: -10px; font-size: 1.2rem; }
+            .legend { gap: 10px; font-size: 0.8rem; }
+            .legend-color { width: 12px; height: 12px; }
         }
     </style>
 </head>
@@ -38,18 +111,108 @@
     <h1>Love Points Chart ❤️</h1>
     <div class="content-box">
         <p>Discover how much I cherish my family—watch the love grow! 😊🌟</p>
-        <div class="love-bar"><div class="love-fill" style="width: 50%;">Sakshi: 5/10</div></div>
-        <div class="love-bar"><div class="love-fill" style="width: 40%;">Deepak Mama: 4/10</div></div>
-        <div class="love-bar"><div class="love-fill" style="width: 95%;">Jayanti Auntie: 9.5/10</div></div>
-        <div class="love-bar"><div class="love-fill" style="width: 80%;">Yasuda Auntie: 8/10</div></div>
-        <div class="love-bar"><div class="love-fill" style="width: 80%;">Amit Dada: 8/10</div></div>
-        <div class="love-bar"><div class="love-fill" style="width: 100%;">Mummy: 10/10</div></div>
-        <div class="love-bar"><div class="love-fill" style="width: 85%;">Aama (Mamaghar): 8.5/10</div></div>
-        <div class="love-bar"><div class="love-fill" style="width: 70%;">Dad: 7/10</div></div>
-        <div class="love-bar"><div class="love-fill" style="width: 80%;">Hajurbuwa: 8/10</div></div>
-        <div class="love-bar"><div class="love-fill" style="width: 55%;">Ashim Dada: 5.5/10</div></div>
-        <div class="love-bar"><div class="love-fill" style="width: 60%;">Thulo Buwa: 6/10</div></div>
-        <div class="love-bar"><div class="love-fill" style="width: 70%;">Thulo Mummy: 7/10</div></div>
+        <!-- Random order of family members -->
+        <div class="love-bar-container">
+            <div class="love-bar-bg">
+                <div class="love-bar-fill low" style="width: 50%;">
+                    <span class="love-text">Sakshi: 5/10</span>
+                </div>
+            </div>
+            <div class="heart-icon">❤️</div>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 40%;">
+                    <span class="love-text">Deepak Mama: 4/10</span>
+                </div>
+            </div>
+            <div class="heart-icon">❤️</div>
+        </div>
+        <div class="love-bar-container high">
+            <div class="love-bar-bg">
+                <div class="love-bar-fill high" style="width: 95%;">
+                    <span class="love-text">Jayanti Auntie: 9.5/10</span>
+                </div>
+            </div>
+            <div class="heart-icon">❤️</div>
+        </div>
+        <div class="love-bar-container high">
+            <div class="love-bar-bg">
+                <div class="love-bar-fill high" style="width: 100%;">
+                    <span class="love-text">Mummy: 10/10</span>
+                </div>
+            </div>
+            <div class="heart-icon">❤️</div>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 70%;">
+                    <span class="love-text">Dad: 7/10</span>
+                </div>
+            </div>
+            <div class="heart-icon">❤️</div>
+        </div>
+        <div class="love-bar-container high">
+            <div class="love-bar-bg">
+                <div class="love-bar-fill high" style="width: 85%;">
+                    <span class="love-text">Aama (Mamaghar): 8.5/10</span>
+                </div>
+            </div>
+            <div class="heart-icon">❤️</div>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 80%;">
+                    <span class="love-text">Yasuda Auntie: 8/10</span>
+                </div>
+            </div>
+            <div class="heart-icon">❤️</div>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 80%;">
+                    <span class="love-text">Amit Dada: 8/10</span>
+                </div>
+            </div>
+            <div class="heart-icon">❤️</div>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 80%;">
+                    <span class="love-text">Hajurbuwa: 8/10</span>
+                </div>
+            </div>
+            <div class="heart-icon">❤️</div>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 70%;">
+                    <span class="love-text">Thulo Mummy: 7/10</span>
+                </div>
+            </div>
+            <div class="heart-icon">❤️</div>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 60%;">
+                    <span class="love-text">Thulo Buwa: 6/10</span>
+                </div>
+            </div>
+            <div class="heart-icon">❤️</div>
+        </div>
+        <div class="love-bar-container">
+            <div class="love-bar-bg">
+                <div class="love-bar-fill medium" style="width: 55%;">
+                    <span class="love-text">Ashim Dada: 5.5/10</span>
+                </div>
+            </div>
+            <div class="heart-icon">❤️</div>
+        </div>
+        <div class="legend">
+            <div class="legend-item"><div class="legend-color bg-rose-500"></div>Low (0-5.9)</div>
+            <div class="legend-item"><div class="legend-color bg-amber-400"></div>Medium (6-7.9)</div>
+            <div class="legend-item"><div class="legend-color bg-emerald-500"></div>High (8-10)</div>
+        </div>
     </div>
     <div class="back" onclick="window.location.href='family-details.html'">Back ⬅️</div>
 </body>
