@@ -5,19 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saksham's World</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f8ff; text-align: center; padding: 20px; }
-        .box { background-color: #ffe4e1; padding: 20px; margin: 10px; border-radius: 10px; cursor: pointer; }
+        body { font-family: Arial, sans-serif; background-color: #f0f8ff; text-align: center; padding: 20px; margin: 0; }
+        .box { background-color: #ffe4e1; padding: 15px; margin: 10px auto; border-radius: 10px; cursor: pointer; max-width: 90%; box-sizing: border-box; }
         .box:hover { background-color: #ffcccb; }
-        h1 { color: #ff4500; }
+        h1 { color: #ff4500; font-size: 1.5rem; }
+        p { font-size: 1rem; line-height: 1.5; margin: 0 10px; }
+        @media (max-width: 768px) {
+            .box { padding: 10px; font-size: 0.9rem; }
+            h1 { font-size: 1.2rem; }
+            p { font-size: 0.9rem; }
+        }
     </style>
 </head>
 <body>
     <h1>Hi! I’m Saksham’s Memory Assistant! 👋</h1>
-    <p>What do you wanna know about me? Pick a category—it’s gonna be fun! 😎</p>
+    <p>What do you wanna know about me? Pick a category—it’s gonna be fun! 😊</p>
     <div class="box" onclick="window.location.href='health.html'">Health 💪</div>
     <div class="box" onclick="window.location.href='family.html'">Family 👨‍👩‍👧</div>
     <div class="box" onclick="window.location.href='love-life.html'">Love Life 💕</div>
-    <div class="box" onclick="window.location.href='social-life.html'">Social Life 🌐</div>
+    <div class="box" onclick="window.location.href='social-life.html'">Social Life 🌍</div>
     <div class="box" onclick="window.location.href='personal-things.html'">Personal Things 🤫</div>
+    <div class="box" onclick="window.location.href='personalised-info.html'">Personalised Info 🤝</div>
 </body>
 </html>
