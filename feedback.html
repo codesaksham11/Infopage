@@ -73,7 +73,7 @@
         <input type="text" class="input-field" id="directSuggestion" placeholder="Your Suggestion">
         <button onclick="submitDirect()">Submit</button>
         <button class="thank-you" id="thankYouButton" onclick="checkClicks()">Thank You!</button>
-        <button class="back" onclick="window.location.href='index.html'">Back ⬅️</button>
+        <button class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
         <div class="content-box hidden" id="storageView">
             <h2>Hidden Suggestions 📝</h2>
             <div><strong>Scores</strong></div>
@@ -131,7 +131,7 @@
                 localStorage.setItem("directSuggestions", JSON.stringify(suggestions));
                 document.getElementById("directName").value = "";
                 document.getElementById("directSuggestion").value = "";
-                showMessage("Thank you for suggestion 👍");
+                showMessage("Suggestion stored locally! 🎉");
             } else {
                 showMessage("Please enter both name and suggestion! 😕");
             }
@@ -156,7 +156,10 @@
         function loadTriviaScores() {
             const scores = JSON.parse(localStorage.getItem("triviaScores") || "[]");
             const list = document.getElementById("storedTriviaScores");
-            list.innerHTML = scores.map((s, i) => `<p class="score-item">${i + 1}. ${s.score}/7 <span class="date-time">(${s.timestamp})</span></p>`).join("");
+            list.innerHTML = scores.map((s, i) => {
+                const dateTime = new Date(s.date).toLocaleString().replace(/,/, '');
+                return `<p class="score-item">${i + 1}. ${s.score}/7 <span class="date-time">(${dateTime})</span></p>`;
+            }).join("");
         }
 
         function hideStorageView() {
