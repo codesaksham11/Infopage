@@ -138,6 +138,10 @@
                 showQuestion();
             } else {
                 showResult();
+                // Store final score in localStorage
+                const scores = JSON.parse(localStorage.getItem("triviaScores") || "[]");
+                scores.push({ score: score, date: new Date().toLocaleDateString() });
+                localStorage.setItem("triviaScores", JSON.stringify(scores));
             }
         }
 
