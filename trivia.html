@@ -14,14 +14,41 @@
         .option { display: block; background-color: #fff; padding: 10px; margin: 5px auto; border-radius: 5px; cursor: pointer; max-width: 80%; }
         .option:hover { background-color: #e0e0e0; }
         .score { font-size: 1rem; color: #ff4500; margin: 10px 0; }
+        .back-to-main { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin: 10px 0; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #d4edda;
+            margin: 20% auto;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 80%;
+            text-align: center;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ff4500;
+        }
         .result { font-size: 1.2rem; color: #00cc00; margin: 20px 0; }
-        .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 15px; }
         @media (max-width: 768px) {
             .content-box { padding: 10px; }
             .question { font-size: 1rem; }
             .option { font-size: 0.9rem; padding: 8px; }
             .score, .result { font-size: 0.9rem; }
             .start-button, .next-button { padding: 8px 15px; }
+            .modal-content { margin: 25% auto; max-width: 90%; }
         }
     </style>
 </head>
@@ -30,49 +57,40 @@
         <h1>Trivia Time! 🧠</h1>
         <p>Test your knowledge about me! Click to start. 😄</p>
         <button class="start-button" onclick="startQuiz()">Start</button>
-        <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
+        <div class="back-to-main" onclick="window.location.href='index.html'">Back to Main ⬅️</div>
     </div>
 
     <div class="content-box" id="quizScreen" style="display: none;">
         <div class="question" id="question"></div>
         <div class="options" id="options"></div>
-        <div class="score" id="score">Score: 0/5</div>
+        <div class="score" id="score">Score: 0/7</div>
         <button class="next-button" onclick="nextQuestion()" id="nextButton" style="display: none;">Next</button>
+        <div class="back-to-main" onclick="window.location.href='index.html'">Back to Main ⬅️</div>
     </div>
 
     <div class="content-box" id="resultScreen" style="display: none;">
         <h1>Trivia Result! 🎉</h1>
         <div class="result" id="result"></div>
-        <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
+        <div class="back-to-main" onclick="window.location.href='index.html'">Back to Main ⬅️</div>
+    </div>
+
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">×</span>
+            <p id="feedbackText"></p>
+            <button class="next-button" onclick="closeModalAndNext()">Next</button>
+        </div>
     </div>
 
     <script>
         const questions = [
-            {
-                question: "What’s my age?",
-                options: ["15", "17", "19", "21"],
-                answer: "17"
-            },
-            {
-                question: "What do I love talking about most?",
-                options: ["Sports", "AI", "Music", "Food"],
-                answer: "AI"
-            },
-            {
-                question: "Where do I love to travel?",
-                options: ["Cities", "Beaches", "Green Remote Places", "Mountains"],
-                answer: "Green Remote Places"
-            },
-            {
-                question: "How do I act around girls?",
-                options: ["Confident", "Shy and Trembling", "Indifferent", "Chatty"],
-                answer: "Shy and Trembling"
-            },
-            {
-                question: "Who built this website?",
-                options: ["Me Alone", "xAI and Me", "A Friend", "My Teacher"],
-                answer: "xAI and Me"
-            }
+            { question: "What’s my age? (Personal Info)", options: ["15", "17", "19", "21"], answer: "17" },
+            { question: "What do I love talking about most? (Trivia)", options: ["Sports", "AI", "Music", "Food"], answer: "AI" },
+            { question: "Where do I love to travel? (Fun Facts)", options: ["Cities", "Beaches", "Green Remote Places", "Mountains"], answer: "Green Remote Places" },
+            { question: "How do I act around girls? (Personal Info)", options: ["Confident", "Shy and Trembling", "Indifferent", "Chatty"], answer: "Shy and Trembling" },
+            { question: "Who is my best friend? (Social)", options: ["Sushant", "Amit", "Arjit", "Safal"], answer: "Sushant" },
+            { question: "How much can I lift? (Health)", options: ["20kg", "30kg", "40kg", "50kg"], answer: "30kg" },
+            { question: "In which classes did I top? (Mental Health)", options: ["1st and 4th", "LKG and 3rd", "2nd and 5th", "6th and 9th"], answer: "LKG and 3rd" }
         ];
 
         let currentQuestion = 0;
@@ -102,16 +120,19 @@
 
         function checkAnswer(selected) {
             const q = questions[currentQuestion];
+            const feedbackModal = document.getElementById("feedbackModal");
+            const feedbackText = document.getElementById("feedbackText");
             if (selected === q.answer) {
                 score++;
-                alert("Correct! 🎉");
+                feedbackText.textContent = "Correct! 🎉";
             } else {
-                alert(`Wrong! The answer was ${q.answer}. 😕`);
+                feedbackText.textContent = "Incorrect! 😕";
             }
-            document.getElementById("nextButton").style.display = "block";
+            feedbackModal.style.display = "block";
         }
 
-        function nextQuestion() {
+        function closeModalAndNext() {
+            document.getElementById("feedbackModal").style.display = "none";
             currentQuestion++;
             if (currentQuestion < questions.length) {
                 showQuestion();
@@ -124,6 +145,10 @@
             document.getElementById("quizScreen").style.display = "none";
             document.getElementById("resultScreen").style.display = "block";
             document.getElementById("result").textContent = `Your final score is ${score}/${questions.length}! Great effort! 😄👍`;
+        }
+
+        function closeModal() {
+            document.getElementById("feedbackModal").style.display = "none";
         }
     </script>
 </body>
