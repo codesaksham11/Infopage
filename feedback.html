@@ -13,14 +13,39 @@
         button { background-color: #ff9999; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
         button:hover { background-color: #ff6666; }
         .thank-you { background-color: #00cc00; color: white; padding: 10px; margin: 10px; border-radius: 5px; }
-        .error { background-color: #ff4d4d; color: white; padding: 10px; margin: 10px; border-radius: 5px; display: none; }
         .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 15px; }
         .hidden { display: none; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #d4edda;
+            margin: 20% auto;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 80%;
+            text-align: center;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ff4500;
+        }
         @media (max-width: 768px) {
             .content-box { padding: 10px; }
             .option, button { font-size: 0.9rem; padding: 8px 15px; }
             .input-field { font-size: 0.9rem; padding: 8px; }
-            .thank-you, .error { font-size: 0.9rem; padding: 8px; }
+            .modal-content { margin: 25% auto; max-width: 90%; }
         }
     </style>
 </head>
@@ -38,8 +63,6 @@
         <input type="text" class="input-field" id="gmail" placeholder="Your Gmail Address">
         <input type="text" class="input-field" id="emailSuggestion" placeholder="Your Suggestion">
         <button onclick="submitEmail()">Submit</button>
-        <div class="thank-you" id="emailThankYou">Thank you for your feedback! 🎉</div>
-        <div class="error" id="emailError">Incorrect Gmail provided! 😕</div>
         <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
     </div>
 
@@ -52,10 +75,16 @@
         <button class="back" onclick="window.location.href='index.html'">Back ⬅️</button>
         <div class="content-box hidden" id="storageView">
             <h2>Hidden Suggestions 📝</h2>
-            <p>Click 'Thank You!' 4 times to view this! 🔐</p>
             <div id="storedSuggestions"></div>
             <div id="storedTriviaScores"></div>
-            <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
+            <button onclick="hideStorageView()">⬅️</button>
+        </div>
+    </div>
+
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">×</span>
+            <p id="modalMessage"></p>
         </div>
     </div>
 
@@ -79,16 +108,14 @@
             const suggestion = document.getElementById("emailSuggestion").value;
             if (gmail && suggestion) {
                 if (gmail.toLowerCase().endsWith("@gmail.com")) {
-                    document.getElementById("emailThankYou").style.display = "block";
-                    setTimeout(() => document.getElementById("emailThankYou").style.display = "none", 2000);
+                    showMessage("Thank you for your feedback! 🎉");
                 } else {
-                    document.getElementById("emailError").style.display = "block";
-                    setTimeout(() => document.getElementById("emailError").style.display = "none", 2000);
+                    showMessage("Incorrect Gmail provided! 😕");
                 }
                 document.getElementById("gmail").value = "";
                 document.getElementById("emailSuggestion").value = "";
             } else {
-                alert("Please enter both Gmail and suggestion! 😕");
+                showMessage("Please enter both Gmail and suggestion! 😕");
             }
         }
 
@@ -101,9 +128,9 @@
                 localStorage.setItem("directSuggestions", JSON.stringify(suggestions));
                 document.getElementById("directName").value = "";
                 document.getElementById("directSuggestion").value = "";
-                alert("Suggestion stored locally! 🎉");
+                showMessage("Suggestion stored locally! 🎉");
             } else {
-                alert("Please enter both name and suggestion! 😕");
+                showMessage("Please enter both name and suggestion! 😕");
             }
         }
 
@@ -120,13 +147,37 @@
         function loadSuggestions() {
             const suggestions = JSON.parse(localStorage.getItem("directSuggestions") || "[]");
             const list = document.getElementById("storedSuggestions");
-            list.innerHTML = suggestions.map(s => `<p>${s.name} (${s.timestamp}): ${s.suggestion}</p>`).join("");
+            list.innerHTML = suggestions.map(s => `[${s.name}: ${s.suggestion} (${s.timestamp.split(',')[0].replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$1/$2')})]`).join("<br>");
         }
 
         function loadTriviaScores() {
             const scores = JSON.parse(localStorage.getItem("triviaScores") || "[]");
             const list = document.getElementById("storedTriviaScores");
-            list.innerHTML = scores.map(s => `<p>Score: ${s.score}/7 on ${s.date}</p>`).join("");
+            list.innerHTML = scores.map(s => `Score: ${s.score}/7 on ${s.date.split(',')[0].replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$1/$2')}`).join("<br>");
+        }
+
+        function hideStorageView() {
+            document.getElementById("storageView").classList.add("hidden");
+        }
+
+        function showMessage(message) {
+            const modal = document.getElementById("messageModal");
+            const modalMessage = document.getElementById("modalMessage");
+            modalMessage.textContent = message;
+            modal.style.display = "block";
+            setTimeout(() => modal.style.display = "none", 2000);
+        }
+
+        function closeModal() {
+            document.getElementById("messageModal").style.display = "none";
+        }
+
+        // Close modal if clicked outside
+        window.onclick = function(event) {
+            const modal = document.getElementById("messageModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
     </script>
 </body>
