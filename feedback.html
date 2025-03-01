@@ -40,8 +40,8 @@
             cursor: pointer;
             color: #ff4500;
         }
-        .suggestion-item, .score-item { color: #000000; } /* Black for suggestions/scores */
-        .date-time { color: #666666; } /* Gray for dates/times */
+        .suggestion-item, .score-item { color: #000000; }
+        .date-time { color: #666666; }
         @media (max-width: 768px) {
             .content-box { padding: 10px; }
             .option, button { font-size: 0.9rem; padding: 8px 15px; }
@@ -98,7 +98,7 @@
         function showDirectOptions() {
             document.getElementById("emailOptions").classList.add("hidden");
             document.getElementById("directOptions").classList.remove("hidden");
-            document.getElementById("thankYouButton").style.display = "inline-block"; // Ensure visible
+            document.getElementById("thankYouButton").style.display = "inline-block";
         }
 
         function showEmailOptions() {
@@ -110,11 +110,11 @@
             const gmail = document.getElementById("gmail").value;
             const suggestion = document.getElementById("emailSuggestion").value;
             if (gmail && suggestion) {
-                if (gmail.toLowerCase().endsWith("@gmail.com")) {
-                    showMessage("Thank you for your feedback! 🎉");
-                } else {
-                    showMessage("Incorrect Gmail provided! 😕");
-                }
+                const email = "s2064b@gmail.com"; // Your Gmail address
+                const subject = "Feedback for Saksham's Site";
+                const body = `Name: ${gmail.split('@')[0]}\nSuggestion: ${suggestion}`;
+                window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                showMessage("Opening email client... Please send the email! 📧");
                 document.getElementById("gmail").value = "";
                 document.getElementById("emailSuggestion").value = "";
             } else {
