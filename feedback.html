@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0e68c; text-align: center; padding: 20px; margin: 0; }
+        .content-box { background-color: #ffdab9; padding: 20px; margin: 10px auto; border-radius: 10px; max-width: 90%; box-sizing: border-box; }
+        .option { background-color: #ffe4e1; padding: 15px; margin: 10px auto; border-radius: 10px; cursor: pointer; max-width: 80%; }
+        .option:hover { background-color: #ffcccb; }
+        .input-field { padding: 10px; margin: 10px; width: 80%; max-width: 300px; }
+        button { background-color: #ff9999; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background-color: #ff6666; }
+        .feedback-box { background-color: #d4edda; padding: 15px; margin: 10px auto; border-radius: 10px; max-width: 80%; display: none; }
+        .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 15px; }
+        @media (max-width: 768px) {
+            .content-box, .feedback-box { padding: 10px; }
+            .option { padding: 10px; font-size: 0.9rem; }
+            .input-field { font-size: 0.9rem; padding: 8px; }
+            button { font-size: 0.9rem; padding: 8px 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="content-box" id="mainScreen">
+        <h1>Feedback Time! 📨</h1>
+        <p>Got something to say? Choose your way! 😄</p>
+        <div class="option" onclick="showDirect()">Send Directly 🚀</div>
+        <div class="option" onclick="showEmail()">Send via Email 📧</div>
+        <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
+    </div>
+
+    <div class="content-box" id="emailScreen" style="display: none;">
+        <h2>Email Your Feedback 📧</h2>
+        <input type="text" class="input-field" id="gmail" placeholder="Your Gmail Address">
+        <input type="text" class="input-field" id="emailSuggestion" placeholder="Your Suggestion">
+        <button onclick="submitEmail()">Submit</button>
+        <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
+    </div>
+
+    <div class="content-box" id="directScreen" style="display: none;">
+        <h2>Direct Feedback 🚀</h2>
+        <input type="text" class="input-field" id="directName" placeholder="Your Name">
+        <input type="text" class="input-field" id="directSuggestion" placeholder="Your Suggestion">
+        <button onclick="submitDirect()">Thank You!</button>
+        <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
+    </div>
+
+    <div class="feedback-box" id="feedbackResult" style="display: none;">
+        <p id="feedbackText"></p>
+    </div>
+
+    <script>
+        let clickCount = 0;
+
+        function showDirect() {
+            document.getElementById("mainScreen").style.display = "none";
+            document.getElementById("directScreen").style.display = "block";
+        }
+
+        function showEmail() {
+            document.getElementById("mainScreen").style.display = "none";
+            document.getElementById("emailScreen").style.display = "block";
+        }
+
+        function submitEmail() {
+            const gmail = document.getElementById("gmail").value;
+            const suggestion = document.getElementById("emailSuggestion").value;
+            const feedbackResult = document.getElementById("feedbackResult");
+            const feedbackText = document.getElementById("feedbackText");
+            if (gmail && suggestion) {
+                if (gmail.toLowerCase().endsWith("@gmail.com")) {
+                    feedbackText.textContent = "Thank you for your feedback! 🎉😊";
+                } else {
+                    feedbackText.textContent = "Incorrect Gmail provided! 😕 Please use a @gmail.com address.";
+                }
+            } else {
+                feedbackText.textContent = "Please enter both Gmail and suggestion! 😕";
+            }
+            feedbackResult.style.display = "block";
+            document.getElementById("emailScreen").style.display = "none";
+            setTimeout(() => {
+                feedbackResult.style.display = "none";
+                document.getElementById("mainScreen").style.display = "block";
+                document.getElementById("gmail").value = "";
+                document.getElementById("emailSuggestion").value = "";
+            }, 2000);
+        }
+
+        function submitDirect() {
+            const name = document.getElementById("directName").value;
+            const suggestion = document.getElementById("directSuggestion").value;
+            if (name && suggestion) {
+                const suggestions = JSON.parse(localStorage.getItem("suggestions") || "[]");
+                suggestions.push({ name, suggestion, timestamp: new Date().toISOString() });
+                localStorage.setItem("suggestions", JSON.stringify(suggestions));
+                document.getElementById("directName").value = "";
+                document.getElementById("directSuggestion").value = "";
+            }
+            document.getElementById("directScreen").style.display = "none";
+            const feedbackResult = document.getElementById("feedbackResult");
+            const feedbackText = document.getElementById("feedbackText");
+            feedbackText.textContent = "Thank you for your feedback! 🎉";
+            feedbackResult.style.display = "block";
+            setTimeout(() => {
+                feedbackResult.style.display = "none";
+                document.getElementById("mainScreen").style.display = "block";
+            }, 2000);
+
+            // Four-click reveal
+            const thankYouButton = document.querySelector("#directScreen button");
+            thankYouButton.addEventListener("click", function() {
+                clickCount++;
+                if (clickCount === 4) {
+                    const adminView = document.createElement("div");
+                    adminView.innerHTML = `
+                        <div class="content-box">
+                            <h2>Admin View 🔐</h2>
+                            <p>Stored Suggestions: 😎</p>
+                            <div class="suggestions-list" id="localSuggestions"></div>
+                            <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
+                        </div>
+                    `;
+                    document.body.appendChild(adminView);
+                    const list = adminView.querySelector("#localSuggestions");
+                    const suggestions = JSON.parse(localStorage.getItem("suggestions") || "[]");
+                    list.innerHTML = suggestions.map(s => `<p>${s.name} (${new Date(s.timestamp).toLocaleString()}): ${s.suggestion}</p>`).join("");
+                    clickCount = 0;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
