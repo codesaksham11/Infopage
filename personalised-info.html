@@ -3,72 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saksham's World</title>
+    <title>Personalised Info</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            background-color: #f0f8ff; 
-            text-align: center; 
-            padding: 20px; 
-            margin: 0; 
-            opacity: 0;
-            animation: fadeIn 1s ease-in-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .box { 
-            background-color: #ffe4e1; 
-            padding: 15px; 
-            margin: 10px auto; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            max-width: 90%; 
-            box-sizing: border-box; 
-        }
-        .box:hover { background-color: #ffcccb; }
-        h1 { 
-            color: #ff4500; 
-            font-size: 1.5rem; 
-            margin: 0;
-            overflow: hidden;
-            white-space: nowrap;
-            border-right: 2px solid #ff4500;
-            animation: typing 3s steps(30, end), blink 0.5s step-end infinite;
-        }
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-        @keyframes blink {
-            50% { border-color: transparent; }
-        }
+        body { font-family: Arial, sans-serif; background-color: #f0e68c; text-align: center; padding: 20px; margin: 0; }
+        .box { background-color: #ffdab9; padding: 15px; margin: 10px auto; border-radius: 10px; cursor: pointer; max-width: 90%; box-sizing: border-box; }
+        .box:hover { background-color: #ffdead; }
+        .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 15px; }
+        h1 { color: #ff4500; font-size: 1.5rem; }
         p { font-size: 1rem; line-height: 1.5; margin: 0 10px; }
-        .personal-photo {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
         @media (max-width: 768px) {
             .box { padding: 10px; font-size: 0.9rem; }
             h1 { font-size: 1.2rem; }
             p { font-size: 0.9rem; }
-            .personal-photo { max-width: 80%; }
         }
     </style>
 </head>
 <body>
-    <h1>Hi! I’m Saksham’s Memory Assistant!</h1>
-    <p>What do you wanna know about me? Pick a category—it’s gonna be fun! 😊</p>
-    <div class="box" onclick="window.location.href='health.html'">Health 💪</div>
-    <div class="box" onclick="window.location.href='family.html'">Family 👨‍👩‍👧</div>
-    <div class="box" onclick="window.location.href='love-life.html'">Love Life 💕</div>
-    <div class="box" onclick="window.location.href='social-life.html'">Social Life 🌍</div>
-    <div class="box" onclick="window.location.href='personal-things.html'">Personal Things 🤫</div>
-    <div class="box" onclick="window.location.href='personalised-info.html'">Personalised Info 🤝</div>
-    <div class="box" onclick="window.location.href='fun-facts.html'">Fun Facts 🎉</div>
-    <img src="images/IMG_20250226_165425.jpg" alt="Saksham" class="personal-photo">
+    <h1>Saksham's Secret Stash 🤝</h1>
+    <p>Since there are details I cannot share with the general public, here’s extra info for special groups like family or friends. What would you like to explore? 😊</p>
+    <div class="box" onclick="window.location.href='family-personalised.html'">Family 👨‍👩‍👧</div>
+    <div class="box" onclick="window.location.href='homie-personalised.html'">Homies 👥</div>
+    <div class="box" onclick="window.location.href='school-personalised.html'">School 📚</div>
+    <div class="box" onclick="window.location.href='friends-personalised.html'">Friends 🌐</div>
+    <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
 </body>
 </html>
