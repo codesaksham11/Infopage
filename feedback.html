@@ -5,153 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0e68c; text-align: center; padding: 20px; margin: 0; }
-        .content-box { background-color: #ffdab9; padding: 20px; margin: 10px auto; border-radius: 10px; max-width: 90%; box-sizing: border-box; }
-        .option { background-color: #ffe4e1; padding: 15px; margin: 10px auto; border-radius: 10px; cursor: pointer; max-width: 80%; }
-        .option:hover { background-color: #ffcccb; }
+        body { font-family: Arial, sans-serif; background-color: #e6ffe6; text-align: center; padding: 20px; margin: 0; }
+        .content-box { background-color: #d4edda; padding: 20px; margin: 10px auto; border-radius: 10px; max-width: 90%; box-sizing: border-box; }
+        .option { background-color: #ff9999; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 10px; display: inline-block; }
+        .option:hover { background-color: #ff6666; }
         .input-field { padding: 10px; margin: 10px; width: 80%; max-width: 300px; }
         button { background-color: #ff9999; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
         button:hover { background-color: #ff6666; }
-        .feedback-box { background-color: #d4edda; padding: 15px; margin: 10px auto; border-radius: 10px; max-width: 80%; display: none; }
+        .thank-you { background-color: #00cc00; color: white; padding: 10px; margin: 10px; border-radius: 5px; display: none; }
+        .error { background-color: #ff4d4d; color: white; padding: 10px; margin: 10px; border-radius: 5px; display: none; }
         .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 15px; }
+        .hidden { display: none; }
         @media (max-width: 768px) {
-            .content-box, .feedback-box { padding: 10px; }
-            .option { padding: 10px; font-size: 0.9rem; }
+            .content-box { padding: 10px; }
+            .option, button { font-size: 0.9rem; padding: 8px 15px; }
             .input-field { font-size: 0.9rem; padding: 8px; }
-            button { font-size: 0.9rem; padding: 8px 15px; }
+            .thank-you, .error { font-size: 0.9rem; padding: 8px; }
         }
     </style>
 </head>
 <body>
-    <div class="content-box" id="mainScreen">
-        <h1>Feedback Time! 📨</h1>
-        <p>Got something to say? Choose your way! 😄</p>
-        <div class="option" onclick="showDirect()">Send Directly 🚀</div>
-        <div class="option" onclick="showEmail()">Send via Email 📧</div>
+    <div class="content-box">
+        <h1>Feedback Time! 📩</h1>
+        <p>Got feedback? Choose your way! 😄</p>
+        <div class="option" onclick="showDirectOptions()">Send Directly</div>
+        <div class="option" onclick="showEmailOptions()">Send via Email</div>
         <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
     </div>
 
-    <div class="content-box" id="emailScreen" style="display: none;">
+    <div class="content-box hidden" id="emailOptions">
         <h2>Email Your Feedback 📧</h2>
         <input type="text" class="input-field" id="gmail" placeholder="Your Gmail Address">
         <input type="text" class="input-field" id="emailSuggestion" placeholder="Your Suggestion">
         <button onclick="submitEmail()">Submit</button>
+        <div class="thank-you" id="emailThankYou">Thank you for your feedback! 🎉</div>
+        <div class="error" id="emailError">Incorrect Gmail provided! 😕</div>
         <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
     </div>
 
-    <div class="content-box" id="directScreen" style="display: none;">
-        <h2>Direct Feedback 🚀</h2>
+    <div class="content-box hidden" id="directOptions">
+        <h2>Send Directly 😄</h2>
         <input type="text" class="input-field" id="directName" placeholder="Your Name">
         <input type="text" class="input-field" id="directSuggestion" placeholder="Your Suggestion">
         <button onclick="submitDirect()">Submit</button>
-        <button id="thankYouButton" style="display: none;">Thank You!</button>
-        <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
-    </div>
-
-    <div class="feedback-box" id="feedbackResult" style="display: none;">
-        <p id="feedbackText"></p>
+        <button class="thank-you" id="thankYouButton" onclick="checkClicks()">Thank You!</button>
+        <button class="back" onclick="window.location.href='index.html'">Back ⬅️</button>
+        <div class="content-box hidden" id="storageView">
+            <h2>Hidden Suggestions 📝</h2>
+            <p>Click 'Thank You!' 4 times to view stored suggestions and trivia scores! 🔐</p>
+            <div id="storedSuggestions"></div>
+            <div id="storedTriviaScores"></div>
+            <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
+        </div>
     </div>
 
     <script>
         let clickCount = 0;
+        let clickTimeout;
 
-        function showDirect() {
-            document.getElementById("mainScreen").style.display = "none";
-            document.getElementById("directScreen").style.display = "block";
-            document.getElementById("thankYouButton").style.display = "none"; // Hide initially
+        function showDirectOptions() {
+            document.getElementById("emailOptions").classList.add("hidden");
+            document.getElementById("directOptions").classList.remove("hidden");
         }
 
-        function showEmail() {
-            document.getElementById("mainScreen").style.display = "none";
-            document.getElementById("emailScreen").style.display = "block";
+        function showEmailOptions() {
+            document.getElementById("directOptions").classList.add("hidden");
+            document.getElementById("emailOptions").classList.remove("hidden");
         }
 
         function submitEmail() {
             const gmail = document.getElementById("gmail").value;
             const suggestion = document.getElementById("emailSuggestion").value;
-            const feedbackResult = document.getElementById("feedbackResult");
-            const feedbackText = document.getElementById("feedbackText");
-            if (!suggestion) {
-                feedbackText.textContent = "Suggestion empty! 😕";
-                feedbackResult.style.display = "block";
-                setTimeout(() => {
-                    feedbackResult.style.display = "none";
-                }, 2000);
-                return;
-            }
             if (gmail && suggestion) {
                 if (gmail.toLowerCase().endsWith("@gmail.com")) {
-                    feedbackText.textContent = "Thank you for your feedback! 🎉😊";
+                    document.getElementById("emailThankYou").style.display = "block";
+                    setTimeout(() => document.getElementById("emailThankYou").style.display = "none", 2000);
                 } else {
-                    feedbackText.textContent = "Incorrect Gmail provided! 😕 Please use a @gmail.com address.";
+                    document.getElementById("emailError").style.display = "block";
+                    setTimeout(() => document.getElementById("emailError").style.display = "none", 2000);
                 }
-            } else if (!gmail && suggestion) {
-                feedbackText.textContent = "Thank you for your feedback! 🎉😊";
-            } else {
-                feedbackText.textContent = "Please enter a suggestion! 😕";
-            }
-            feedbackResult.style.display = "block";
-            document.getElementById("emailScreen").style.display = "none";
-            setTimeout(() => {
-                feedbackResult.style.display = "none";
-                document.getElementById("mainScreen").style.display = "block";
                 document.getElementById("gmail").value = "";
                 document.getElementById("emailSuggestion").value = "";
-            }, 2000);
+            } else {
+                alert("Please enter both Gmail and suggestion! 😕");
+            }
         }
 
         function submitDirect() {
             const name = document.getElementById("directName").value;
             const suggestion = document.getElementById("directSuggestion").value;
-            const feedbackResult = document.getElementById("feedbackResult");
-            const feedbackText = document.getElementById("feedbackText");
-            if (!suggestion) {
-                feedbackText.textContent = "Suggestion empty! 😕";
-                feedbackResult.style.display = "block";
-                setTimeout(() => {
-                    feedbackResult.style.display = "none";
-                }, 2000);
-                return;
-            }
             if (name && suggestion) {
-                const suggestions = JSON.parse(localStorage.getItem("suggestions") || "[]");
-                suggestions.push({ name, suggestion, timestamp: new Date().toISOString() });
-                localStorage.setItem("suggestions", JSON.stringify(suggestions));
+                const suggestions = JSON.parse(localStorage.getItem("directSuggestions") || "[]");
+                suggestions.push({ name, suggestion, timestamp: new Date().toLocaleString() });
+                localStorage.setItem("directSuggestions", JSON.stringify(suggestions));
                 document.getElementById("directName").value = "";
                 document.getElementById("directSuggestion").value = "";
-                feedbackText.textContent = "Thank you for your feedback! 🎉";
-                feedbackResult.style.display = "block";
-                document.getElementById("thankYouButton").style.display = "inline-block"; // Show after submission
+                alert("Suggestion stored locally! 🎉");
             } else {
-                feedbackText.textContent = "Please enter both name and suggestion! 😕";
-                feedbackResult.style.display = "block";
+                alert("Please enter both name and suggestion! 😕");
             }
-            setTimeout(() => {
-                feedbackResult.style.display = "none";
-                if (name && suggestion) document.getElementById("directScreen").style.display = "none";
-            }, 2000);
         }
 
-        // Four-click reveal for admin view
-        document.getElementById("thankYouButton").addEventListener("click", function() {
+        function checkClicks() {
             clickCount++;
-            if (clickCount === 4) {
-                const adminView = document.createElement("div");
-                adminView.innerHTML = `
-                    <div class="content-box">
-                        <h2>Admin View 🔐</h2>
-                        <p>Stored Suggestions: 😎</p>
-                        <div class="suggestions-list" id="localSuggestions"></div>
-                        <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
-                    </div>
-                `;
-                document.body.appendChild(adminView);
-                const list = adminView.querySelector("#localSuggestions");
-                const suggestions = JSON.parse(localStorage.getItem("suggestions") || "[]");
-                list.innerHTML = suggestions.map(s => `<p>${s.name} (${new Date(s.timestamp).toLocaleString()}): ${s.suggestion}</p>`).join("");
+            if (clickCount >= 4) {
+                document.getElementById("storageView").classList.remove("hidden");
+                loadSuggestions();
+                loadTriviaScores();
                 clickCount = 0;
             }
-        });
+        }
+
+        function loadSuggestions() {
+            const suggestions = JSON.parse(localStorage.getItem("directSuggestions") || "[]");
+            const list = document.getElementById("storedSuggestions");
+            list.innerHTML = suggestions.map(s => `<p>${s.name} (${s.timestamp}): ${s.suggestion}</p>`).join("");
+        }
+
+        function loadTriviaScores() {
+            const scores = JSON.parse(localStorage.getItem("triviaScores") || "[]");
+            const list = document.getElementById("storedTriviaScores");
+            list.innerHTML = scores.map(s => `<p>Score: ${s.score}/7 on ${s.date}</p>`).join("");
+        }
     </script>
 </body>
 </html>
