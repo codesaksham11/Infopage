@@ -43,7 +43,8 @@
         <h2>Direct Feedback 🚀</h2>
         <input type="text" class="input-field" id="directName" placeholder="Your Name">
         <input type="text" class="input-field" id="directSuggestion" placeholder="Your Suggestion">
-        <button onclick="submitDirect()">Thank You!</button>
+        <button onclick="submitDirect()">Submit</button>
+        <button id="thankYouButton" style="display: none;">Thank You!</button>
         <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
     </div>
 
@@ -57,6 +58,7 @@
         function showDirect() {
             document.getElementById("mainScreen").style.display = "none";
             document.getElementById("directScreen").style.display = "block";
+            document.getElementById("thankYouButton").style.display = "none"; // Hide initially
         }
 
         function showEmail() {
@@ -97,39 +99,33 @@
                 localStorage.setItem("suggestions", JSON.stringify(suggestions));
                 document.getElementById("directName").value = "";
                 document.getElementById("directSuggestion").value = "";
+                document.getElementById("thankYouButton").style.display = "inline-block"; // Show Thank You button
+            } else {
+                alert("Please enter both name and suggestion! 😕");
             }
-            document.getElementById("directScreen").style.display = "none";
-            const feedbackResult = document.getElementById("feedbackResult");
-            const feedbackText = document.getElementById("feedbackText");
-            feedbackText.textContent = "Thank you for your feedback! 🎉";
-            feedbackResult.style.display = "block";
-            setTimeout(() => {
-                feedbackResult.style.display = "none";
-                document.getElementById("mainScreen").style.display = "block";
-            }, 2000);
-
-            // Four-click reveal
-            const thankYouButton = document.querySelector("#directScreen button");
-            thankYouButton.addEventListener("click", function() {
-                clickCount++;
-                if (clickCount === 4) {
-                    const adminView = document.createElement("div");
-                    adminView.innerHTML = `
-                        <div class="content-box">
-                            <h2>Admin View 🔐</h2>
-                            <p>Stored Suggestions: 😎</p>
-                            <div class="suggestions-list" id="localSuggestions"></div>
-                            <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
-                        </div>
-                    `;
-                    document.body.appendChild(adminView);
-                    const list = adminView.querySelector("#localSuggestions");
-                    const suggestions = JSON.parse(localStorage.getItem("suggestions") || "[]");
-                    list.innerHTML = suggestions.map(s => `<p>${s.name} (${new Date(s.timestamp).toLocaleString()}): ${s.suggestion}</p>`).join("");
-                    clickCount = 0;
-                }
-            });
         }
+
+        // Four-click reveal on Thank You button
+        const thankYouButton = document.getElementById("thankYouButton");
+        thankYouButton.addEventListener("click", function() {
+            clickCount++;
+            if (clickCount === 4) {
+                const adminView = document.createElement("div");
+                adminView.innerHTML = `
+                    <div class="content-box">
+                        <h2>Admin View 🔐</h2>
+                        <p>Stored Suggestions: 😎</p>
+                        <div class="suggestions-list" id="localSuggestions"></div>
+                        <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
+                    </div>
+                `;
+                document.body.appendChild(adminView);
+                const list = adminView.querySelector("#localSuggestions");
+                const suggestions = JSON.parse(localStorage.getItem("suggestions") || "[]");
+                list.innerHTML = suggestions.map(s => `<p>${s.name} (${new Date(s.timestamp).toLocaleString()}): ${s.suggestion}</p>`).join("");
+                clickCount = 0;
+            }
+        });
     </script>
 </body>
 </html>
