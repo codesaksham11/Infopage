@@ -71,14 +71,24 @@
             const suggestion = document.getElementById("emailSuggestion").value;
             const feedbackResult = document.getElementById("feedbackResult");
             const feedbackText = document.getElementById("feedbackText");
+            if (!suggestion) {
+                feedbackText.textContent = "Suggestion empty! 😕";
+                feedbackResult.style.display = "block";
+                setTimeout(() => {
+                    feedbackResult.style.display = "none";
+                }, 2000);
+                return;
+            }
             if (gmail && suggestion) {
                 if (gmail.toLowerCase().endsWith("@gmail.com")) {
                     feedbackText.textContent = "Thank you for your feedback! 🎉😊";
                 } else {
                     feedbackText.textContent = "Incorrect Gmail provided! 😕 Please use a @gmail.com address.";
                 }
+            } else if (!gmail && suggestion) {
+                feedbackText.textContent = "Thank you for your feedback! 🎉😊";
             } else {
-                feedbackText.textContent = "Please enter both Gmail and suggestion! 😕";
+                feedbackText.textContent = "Please enter a suggestion! 😕";
             }
             feedbackResult.style.display = "block";
             document.getElementById("emailScreen").style.display = "none";
@@ -93,21 +103,37 @@
         function submitDirect() {
             const name = document.getElementById("directName").value;
             const suggestion = document.getElementById("directSuggestion").value;
+            const feedbackResult = document.getElementById("feedbackResult");
+            const feedbackText = document.getElementById("feedbackText");
+            if (!suggestion) {
+                feedbackText.textContent = "Suggestion empty! 😕";
+                feedbackResult.style.display = "block";
+                setTimeout(() => {
+                    feedbackResult.style.display = "none";
+                }, 2000);
+                return;
+            }
             if (name && suggestion) {
                 const suggestions = JSON.parse(localStorage.getItem("suggestions") || "[]");
                 suggestions.push({ name, suggestion, timestamp: new Date().toISOString() });
                 localStorage.setItem("suggestions", JSON.stringify(suggestions));
                 document.getElementById("directName").value = "";
                 document.getElementById("directSuggestion").value = "";
-                document.getElementById("thankYouButton").style.display = "inline-block"; // Show Thank You button
+                feedbackText.textContent = "Thank you for your feedback! 🎉";
+                feedbackResult.style.display = "block";
+                document.getElementById("thankYouButton").style.display = "inline-block"; // Show after submission
             } else {
-                alert("Please enter both name and suggestion! 😕");
+                feedbackText.textContent = "Please enter both name and suggestion! 😕";
+                feedbackResult.style.display = "block";
             }
+            setTimeout(() => {
+                feedbackResult.style.display = "none";
+                if (name && suggestion) document.getElementById("directScreen").style.display = "none";
+            }, 2000);
         }
 
-        // Four-click reveal on Thank You button
-        const thankYouButton = document.getElementById("thankYouButton");
-        thankYouButton.addEventListener("click", function() {
+        // Four-click reveal for admin view
+        document.getElementById("thankYouButton").addEventListener("click", function() {
             clickCount++;
             if (clickCount === 4) {
                 const adminView = document.createElement("div");
