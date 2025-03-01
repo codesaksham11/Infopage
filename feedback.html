@@ -12,7 +12,6 @@
         .input-field { padding: 10px; margin: 10px; width: 80%; max-width: 300px; }
         button { background-color: #ff9999; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
         button:hover { background-color: #ff6666; }
-        .thank-you { background-color: #00cc00; color: white; padding: 10px; margin: 10px; border-radius: 5px; }
         .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 15px; }
         .hidden { display: none; }
         .modal {
@@ -41,6 +40,8 @@
             cursor: pointer;
             color: #ff4500;
         }
+        .suggestion-item, .score-item { color: #000000; } /* Black for suggestions/scores */
+        .date-time { color: #666666; } /* Gray for dates/times */
         @media (max-width: 768px) {
             .content-box { padding: 10px; }
             .option, button { font-size: 0.9rem; padding: 8px 15px; }
@@ -75,8 +76,10 @@
         <button class="back" onclick="window.location.href='index.html'">Back ⬅️</button>
         <div class="content-box hidden" id="storageView">
             <h2>Hidden Suggestions 📝</h2>
-            <div id="storedSuggestions"></div>
+            <div><strong>Scores</strong></div>
             <div id="storedTriviaScores"></div>
+            <div><strong>Feedback</strong></div>
+            <div id="storedSuggestions"></div>
             <button onclick="hideStorageView()">⬅️</button>
         </div>
     </div>
@@ -128,7 +131,7 @@
                 localStorage.setItem("directSuggestions", JSON.stringify(suggestions));
                 document.getElementById("directName").value = "";
                 document.getElementById("directSuggestion").value = "";
-                showMessage("Thank you for your feedback 👍");
+                showMessage("Thank you for suggestion 👍");
             } else {
                 showMessage("Please enter both name and suggestion! 😕");
             }
@@ -147,13 +150,13 @@
         function loadSuggestions() {
             const suggestions = JSON.parse(localStorage.getItem("directSuggestions") || "[]");
             const list = document.getElementById("storedSuggestions");
-            list.innerHTML = suggestions.map(s => `[${s.name}: ${s.suggestion} (${s.timestamp.split(',')[0].replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$1/$2')})]`).join("<br>");
+            list.innerHTML = suggestions.map((s, i) => `<p class="suggestion-item">${i + 1}. [${s.name}: ${s.suggestion}] <span class="date-time">(${s.timestamp})</span></p>`).join("");
         }
 
         function loadTriviaScores() {
             const scores = JSON.parse(localStorage.getItem("triviaScores") || "[]");
             const list = document.getElementById("storedTriviaScores");
-            list.innerHTML = scores.map(s => `Score: ${s.score}/7 on ${s.date.split(',')[0].replace(/(\d+)\/(\d+)\/(\d+)/, '$3/$1/$2')}`).join("<br>");
+            list.innerHTML = scores.map((s, i) => `<p class="score-item">${i + 1}. ${s.score}/7 <span class="date-time">(${s.timestamp})</span></p>`).join("");
         }
 
         function hideStorageView() {
