@@ -71,5 +71,13 @@
     <div class="box" onclick="window.location.href='fun-facts.html'">Fun Facts 🎉</div>
     <div class="box" onclick="window.location.href='trivia.html'">Trivia 🧠</div>
     <img src="images/IMG_20250226_165425.jpg" alt="Saksham" class="personal-photo">
+    <script>
+        // Debug to ensure navigation works
+        document.querySelectorAll('.box').forEach(box => {
+            box.addEventListener('click', function() {
+                console.log('Navigating to: ' + this.getAttribute('onclick').replace('window.location.href=', '').replace(/['"]/g, ''));
+            });
+        });
+    </script>
 </body>
 </html>
