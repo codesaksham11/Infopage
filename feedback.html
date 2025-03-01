@@ -12,7 +12,7 @@
         .input-field { padding: 10px; margin: 10px; width: 80%; max-width: 300px; }
         button { background-color: #ff9999; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
         button:hover { background-color: #ff6666; }
-        .thank-you { background-color: #00cc00; color: white; padding: 10px; margin: 10px; border-radius: 5px; display: none; }
+        .thank-you { background-color: #00cc00; color: white; padding: 10px; margin: 10px; border-radius: 5px; }
         .error { background-color: #ff4d4d; color: white; padding: 10px; margin: 10px; border-radius: 5px; display: none; }
         .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 15px; }
         .hidden { display: none; }
@@ -52,7 +52,7 @@
         <button class="back" onclick="window.location.href='index.html'">Back ⬅️</button>
         <div class="content-box hidden" id="storageView">
             <h2>Hidden Suggestions 📝</h2>
-            <p>Click 'Thank You!' 4 times to view stored suggestions and trivia scores! 🔐</p>
+            <p>Click 'Thank You!' 4 times to view this! 🔐</p>
             <div id="storedSuggestions"></div>
             <div id="storedTriviaScores"></div>
             <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
@@ -66,6 +66,7 @@
         function showDirectOptions() {
             document.getElementById("emailOptions").classList.add("hidden");
             document.getElementById("directOptions").classList.remove("hidden");
+            document.getElementById("thankYouButton").style.display = "inline-block"; // Ensure visible
         }
 
         function showEmailOptions() {
