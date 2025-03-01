@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #e6ffe6; text-align: center; padding: 20px; margin: 0; }
+        .content-box { background-color: #d4edda; padding: 20px; margin: 10px auto; border-radius: 10px; max-width: 90%; box-sizing: border-box; }
+        .start-button, .next-button { background-color: #ff9999; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 10px; }
+        .start-button:hover, .next-button:hover { background-color: #ff6666; }
+        .question { font-size: 1.2rem; margin: 20px 0; }
+        .options { margin: 10px 0; }
+        .option { display: block; background-color: #fff; padding: 10px; margin: 5px auto; border-radius: 5px; cursor: pointer; max-width: 80%; }
+        .option:hover { background-color: #e0e0e0; }
+        .score { font-size: 1rem; color: #ff4500; margin: 10px 0; }
+        .result { font-size: 1.2rem; color: #00cc00; margin: 20px 0; }
+        .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 15px; }
+        @media (max-width: 768px) {
+            .content-box { padding: 10px; }
+            .question { font-size: 1rem; }
+            .option { font-size: 0.9rem; padding: 8px; }
+            .score, .result { font-size: 0.9rem; }
+            .start-button, .next-button { padding: 8px 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="content-box" id="startScreen">
+        <h1>Trivia Time! 🧠</h1>
+        <p>Test your knowledge about me! Click to start. 😄</p>
+        <button class="start-button" onclick="startQuiz()">Start</button>
+        <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
+    </div>
+
+    <div class="content-box" id="quizScreen" style="display: none;">
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <div class="score" id="score">Score: 0/5</div>
+        <button class="next-button" onclick="nextQuestion()" id="nextButton" style="display: none;">Next</button>
+    </div>
+
+    <div class="content-box" id="resultScreen" style="display: none;">
+        <h1>Trivia Result! 🎉</h1>
+        <div class="result" id="result"></div>
+        <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What’s my age?",
+                options: ["15", "17", "19", "21"],
+                answer: "17"
+            },
+            {
+                question: "What do I love talking about most?",
+                options: ["Sports", "AI", "Music", "Food"],
+                answer: "AI"
+            },
+            {
+                question: "Where do I love to travel?",
+                options: ["Cities", "Beaches", "Green Remote Places", "Mountains"],
+                answer: "Green Remote Places"
+            },
+            {
+                question: "How do I act around girls?",
+                options: ["Confident", "Shy and Trembling", "Indifferent", "Chatty"],
+                answer: "Shy and Trembling"
+            },
+            {
+                question: "Who built this website?",
+                options: ["Me Alone", "xAI and Me", "A Friend", "My Teacher"],
+                answer: "xAI and Me"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function startQuiz() {
+            document.getElementById("startScreen").style.display = "none";
+            document.getElementById("quizScreen").style.display = "block";
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById("question").textContent = q.question;
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+            q.options.forEach(option => {
+                const button = document.createElement("div");
+                button.textContent = option;
+                button.className = "option";
+                button.onclick = () => checkAnswer(option);
+                optionsDiv.appendChild(button);
+            });
+            document.getElementById("nextButton").style.display = "none";
+            document.getElementById("score").textContent = `Score: ${score}/${questions.length}`;
+        }
+
+        function checkAnswer(selected) {
+            const q = questions[currentQuestion];
+            if (selected === q.answer) {
+                score++;
+                alert("Correct! 🎉");
+            } else {
+                alert(`Wrong! The answer was ${q.answer}. 😕`);
+            }
+            document.getElementById("nextButton").style.display = "block";
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById("quizScreen").style.display = "none";
+            document.getElementById("resultScreen").style.display = "block";
+            document.getElementById("result").textContent = `Your final score is ${score}/${questions.length}! Great effort! 😄👍`;
+        }
+    </script>
+</body>
+</html>
