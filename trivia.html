@@ -119,10 +119,9 @@
         }
 
         function checkAnswer(selected) {
-            const q = questions[currentQuestion];
             const feedbackModal = document.getElementById("feedbackModal");
             const feedbackText = document.getElementById("feedbackText");
-            if (selected === q.answer) {
+            if (selected === questions[currentQuestion].answer) {
                 score++;
                 feedbackText.textContent = "Correct! 🎉";
             } else {
@@ -137,11 +136,8 @@
             if (currentQuestion < questions.length) {
                 showQuestion();
             } else {
+                saveScore();
                 showResult();
-                // Store final score in localStorage
-                const scores = JSON.parse(localStorage.getItem("triviaScores") || "[]");
-                scores.push({ score: score, date: new Date().toLocaleDateString() });
-                localStorage.setItem("triviaScores", JSON.stringify(scores));
             }
         }
 
@@ -151,8 +147,10 @@
             document.getElementById("result").textContent = `Your final score is ${score}/${questions.length}! Great effort! 😄👍`;
         }
 
-        function closeModal() {
-            document.getElementById("feedbackModal").style.display = "none";
+        function saveScore() {
+            const scores = JSON.parse(localStorage.getItem("triviaScores") || "[]");
+            scores.push({ score: score, date: new Date().toLocaleString() });
+            localStorage.setItem("triviaScores", JSON.stringify(scores));
         }
     </script>
 </body>
