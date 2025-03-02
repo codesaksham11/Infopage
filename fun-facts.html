@@ -5,82 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fun Facts</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            background-color: #f0e68c; 
-            text-align: center; 
-            padding: 20px; 
-            margin: 0; 
-        }
-        .content-box { 
-            background-color: #ffdab9; 
-            padding: 15px; 
-            margin: 10px auto; 
-            border-radius: 10px; 
-            max-width: 90%; 
-            box-sizing: border-box; 
-        }
-        .back { 
-            background-color: #ff9999; 
-            padding: 10px; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            display: inline-block; 
-            margin-top: 15px; 
-        }
+        body { font-family: Arial, sans-serif; background-color: #f0e68c; text-align: center; padding: 20px; margin: 0; }
+        .content-box { background-color: #ffdab9; padding: 15px; margin: 10px auto; border-radius: 10px; max-width: 90%; box-sizing: border-box; }
+        .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 15px; }
         h1 { color: #ff4500; font-size: 1.5rem; }
         p { font-size: 1rem; line-height: 1.5; margin: 10px 10px; }
-        .photo-gallery { 
-            display: none; 
-            max-width: 100%; 
-            margin: 15px auto; 
-            opacity: 0; 
-            animation: fadeIn 0.5s ease-in-out forwards; 
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        .photo-gallery { display: none; max-width: 100%; margin: 15px auto; }
         .gallery-container { position: relative; }
-        .sunset-images { 
-            display: flex; 
-            flex-wrap: wrap; 
-            justify-content: center; 
-            gap: 10px; 
-            padding: 10px 0; 
-        }
-        .sunset-images img { 
-            width: 30%; 
-            height: 180px; 
-            object-fit: cover; 
-            border-radius: 8px; 
-        }
-        .sunset-caption { 
-            font-style: italic; 
-            margin-top: 10px; 
-            font-weight: bold; 
-            font-size: 1.1rem; 
-        }
-        .view-photos, .close-photos { 
-            background-color: #ff9999; 
-            color: white; 
-            border: none; 
-            padding: 8px 15px; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            margin-top: 5px; 
-            font-weight: bold; 
-        }
-        .view-photos:hover, .close-photos:hover { background-color: #ff6666; }
-        .close-photos { display: none; margin-left: 10px; }
-        .photo-gallery.active .close-photos { display: inline-block; }
-        .photo-gallery.active .view-photos { display: none; }
+        .sunset-images { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .sunset-images img { width: 100%; max-width: 300px; height: auto; object-fit: cover; border-radius: 8px; }
+        .sunset-caption { font-style: italic; margin-top: 10px; font-weight: bold; font-size: 1.1rem; color: #333; }
+        .view-photos { background-color: #66b3ff; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 5px; font-weight: bold; transition: background-color 0.3s; }
+        .view-photos:hover { background-color: #4da3ff; }
         @media (max-width: 768px) {
             .content-box { padding: 10px; font-size: 0.9rem; }
             h1 { font-size: 1.2rem; }
             p { font-size: 0.9rem; }
-            .sunset-images img { width: 100%; margin-bottom: 10px; }
-            .view-photos, .close-photos { font-size: 0.9rem; padding: 6px 12px; }
+            .sunset-images img { width: 100%; max-width: 100%; margin-bottom: 10px; }
         }
     </style>
 </head>
@@ -89,13 +30,13 @@
         <h1>Fun Facts About Me! 🎉</h1>
         <p>1) I don’t act mature—I’m 17 but talk like a 10-year-old! 😄👶</p>
         <p>2) Talking to girls is tough—my mind goes blank, and I start trembling! 😅🙈</p>
-        <p>3) I love AI and its applications—this site was built by AI itself! I collaborated with xAI, I tell the ideas he codes, he suggests code I refine—and we made it happen. 🤖😊</p>
+        <p>3) I love AI and its applications—this site was built by AI itself! I collaborated with xAI, I tell the codes he rectifies, he tells the code I rectify—and we made it happen. 🤖😊</p>
         <p>4) The deeper the dive, the richer the treasure… and I’m not talking about the ocean! 🌊💎</p>
         <p>5) I love a good laugh! 😂🌟</p>
         <p>6) I adore traveling to remote, green places like Shillong, Assam, and Ilam! 🌳✨
-            <button class="view-photos" onclick="togglePhotos()">View Sunset Photos</button>
-            <button class="close-photos" onclick="togglePhotos()">Close</button>
+            <button class="view-photos" id="togglePhotosBtn">View Sunset Photos</button>
         </p>
+        
         <div id="photo-gallery" class="photo-gallery">
             <div class="gallery-container">
                 <div class="sunset-images">
@@ -103,7 +44,7 @@
                     <img src="images/IMG_20250302_175828.jpg" alt="Sunset 2 at a remote green place">
                     <img src="images/IMG_20250302_175958.jpg" alt="Sunset 3 at a remote green place">
                 </div>
-                <p class="sunset-caption">Fig. 1: Sunset at green remote places (feels like heaven 😌)</p>
+                <p class="sunset-caption"> Sunset at green remote places (feels like heaven 😌)</p>
             </div>
         </div>
     </div>
@@ -111,13 +52,13 @@
     <script>
         function togglePhotos() {
             const gallery = document.getElementById("photo-gallery");
-            const isActive = gallery.classList.contains("active");
-            if (isActive) {
-                gallery.classList.remove("active");
+            const button = document.getElementById("togglePhotosBtn");
+            if (gallery.style.display === "block") {
                 gallery.style.display = "none";
+                button.textContent = "View Sunset Photos";
             } else {
-                gallery.classList.add("active");
                 gallery.style.display = "block";
+                button.textContent = "Hide Sunset Photos";
             }
         }
     </script>
