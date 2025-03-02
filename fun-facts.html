@@ -10,18 +10,19 @@
         .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 15px; }
         h1 { color: #ff4500; font-size: 1.5rem; }
         p { font-size: 1rem; line-height: 1.5; margin: 10px 10px; }
-        .photo-gallery { display: none; max-width: 100%; margin: 15px auto; }
+        .photo-gallery { display: none; max-width: 100%; margin: 15px auto; opacity: 0; transition: opacity 0.5s ease; }
         .gallery-container { position: relative; }
         .sunset-images { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-        .sunset-images img { width: 100%; max-width: 300px; height: auto; object-fit: cover; border-radius: 8px; }
-        .sunset-caption { font-style: italic; margin-top: 10px; font-weight: bold; font-size: 1.1rem; color: #333; }
-        .view-photos { background-color: #66b3ff; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 5px; font-weight: bold; transition: background-color 0.3s; }
-        .view-photos:hover { background-color: #4da3ff; }
+        .sunset-images img { width: 30%; height: 180px; object-fit: cover; border-radius: 8px; }
+        .sunset-caption { font-style: italic; margin-top: 10px; font-weight: bold; font-size: 1.1rem; }
+        .view-photos { background-color: #66b3ff; color: white; border: none; padding: 8px 15px; 
+                       border-radius: 5px; cursor: pointer; margin-top: 5px; font-weight: bold; }
+        .view-photos::after { content: " 📸"; } /* Visual cue for photos */
         @media (max-width: 768px) {
             .content-box { padding: 10px; font-size: 0.9rem; }
             h1 { font-size: 1.2rem; }
             p { font-size: 0.9rem; }
-            .sunset-images img { width: 100%; max-width: 100%; margin-bottom: 10px; }
+            .sunset-images img { width: 100%; margin-bottom: 10px; }
         }
     </style>
 </head>
@@ -30,21 +31,21 @@
         <h1>Fun Facts About Me! 🎉</h1>
         <p>1) I don’t act mature—I’m 17 but talk like a 10-year-old! 😄👶</p>
         <p>2) Talking to girls is tough—my mind goes blank, and I start trembling! 😅🙈</p>
-        <p>3) I love AI and its applications—this site was built by AI itself! I collaborated with xAI, I tell the codes he rectifies, he tells the code I rectify—and we made it happen. 🤖😊</p>
+        <p>3) I love AI and its applications—this site was built by AI itself! I brainstorm, xAI codes, and we perfect it together! 🤖😊</p>
         <p>4) The deeper the dive, the richer the treasure… and I’m not talking about the ocean! 🌊💎</p>
         <p>5) I love a good laugh! 😂🌟</p>
         <p>6) I adore traveling to remote, green places like Shillong, Assam, and Ilam! 🌳✨
-            <button class="view-photos" id="togglePhotosBtn">View Sunset Photos</button>
+            <button class="view-photos" onclick="togglePhotos()">View Sunset Photos</button>
         </p>
         
         <div id="photo-gallery" class="photo-gallery">
             <div class="gallery-container">
                 <div class="sunset-images">
                     <img src="images/IMG_20250302_175537.jpg" alt="Sunset 1 at a remote green place">
-                    <img src="images/IMG_20250302_175828.jpg" alt="Sunset 2 at a remote green place">
-                    <img src="images/IMG_20250302_175958.jpg" alt="Sunset 3 at a remote green place">
+                    <img src="images/IMG_20250302_175828.jpg" alt="Sunset 2 at a remote green location">
+                    <img src="images/IMG_20250302_175958.jpg" alt="Sunset 3 at a serene green spot">
                 </div>
-                <p class="sunset-caption">Fig. 1: Sunset at green remote places (feels like heaven 😌)</p>
+                <p class="sunset-caption">Sunset at green remote places (feels like heaven 😌)</p>
             </div>
         </div>
     </div>
@@ -52,13 +53,12 @@
     <script>
         function togglePhotos() {
             const gallery = document.getElementById("photo-gallery");
-            const button = document.getElementById("togglePhotosBtn");
             if (gallery.style.display === "block") {
                 gallery.style.display = "none";
-                button.textContent = "View Sunset Photos";
+                gallery.style.opacity = "0";
             } else {
                 gallery.style.display = "block";
-                button.textContent = "Hide Sunset Photos";
+                gallery.style.opacity = "1";
             }
         }
     </script>
