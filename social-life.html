@@ -14,7 +14,7 @@
         }
         .box { 
             background-color: #b0e0e6; 
-            padding: 15px; /* Reduced from 20px for consistency */
+            padding: 15px; /* Base padding for desktop */
             margin: 10px auto; /* Centered with auto margins */
             border-radius: 10px; 
             cursor: pointer; 
@@ -29,7 +29,7 @@
             padding: 10px; 
             border-radius: 5px; 
             cursor: pointer; 
-            display: inline-block; /* Keeps it centered nicely */
+            display: inline-block; /* Keeps it centered */
             margin-top: 15px; 
         }
         h1 { 
@@ -44,18 +44,18 @@
         }
         @media (max-width: 768px) {
             .box { 
-                padding: 10px; 
-                font-size: 0.9rem; /* Slightly smaller text */
+                padding: 20px; /* Bigger padding for larger buttons */
+                font-size: 1.1rem; /* Slightly larger text for readability */
             }
             h1 { 
-                font-size: 1.2rem; /* Smaller heading */
+                font-size: 1.3rem; /* Slightly larger heading */
             }
             p { 
-                font-size: 0.9rem; /* Smaller paragraph */
+                font-size: 1rem; /* Keep paragraph readable */
             }
             .back { 
-                padding: 8px; /* Slightly smaller padding */
-                font-size: 0.9rem; 
+                padding: 12px; /* Bigger padding for back button */
+                font-size: 1rem; /* Larger text */
             }
         }
     </style>
