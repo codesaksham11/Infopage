@@ -41,19 +41,72 @@
             line-height: 1.5; 
             margin: 0 10px; 
         }
+        /* Audio button styling */
+        .audio-button {
+            background-color: #ff4500; /* Matches h1 color for cohesion */
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            margin: 15px auto;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .audio-button:hover {
+            background-color: #e03e00; /* Darker shade on hover */
+            transform: scale(1.05);
+        }
+        .audio-button:active {
+            transform: scale(0.98);
+        }
+        .audio-button i {
+            margin-right: 8px;
+        }
         @media (max-width: 768px) {
             .box { padding: 10px; font-size: 0.9rem; }
             h1 { font-size: 1.2rem; }
             p { font-size: 0.9rem; }
+            .audio-button { font-size: 0.9rem; padding: 8px 16px; }
         }
     </style>
+    <!-- Font Awesome for the audio icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <h1>Love Life Scoop 💕</h1>
     <p>Curious about my love life? 💘 Alright, here’s what I can tell you. What do you want to know? 😊</p>
+    
+    <!-- Love Life Audio Button -->
+    <button class="audio-button" id="loveLifeButton">
+        <i class="fas fa-volume-up"></i> Click to hear the audio
+    </button>
+    
     <div class="box" onclick="window.location.href='relationship-status.html'">My Relationship Status 💍</div>
     <div class="box" onclick="window.location.href='ex.html'">About My Ex 😅</div>
     <div class="box" onclick="window.location.href='crush.html'">My Crush 😘</div>
     <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
+
+    <!-- Hidden audio element -->
+    <audio id="loveLifeAudio" src="images/lv_0_20250308124825.mp3" preload="auto"></audio>
+
+    <script>
+        // Play audio when button is clicked
+        document.getElementById('loveLifeButton').addEventListener('click', () => {
+            const loveLifeAudio = document.getElementById('loveLifeAudio');
+            
+            // Reset the audio to the beginning if it was played before
+            loveLifeAudio.currentTime = 0;
+            
+            // Play the love life audio
+            loveLifeAudio.play().catch(error => {
+                console.log("Audio playback failed:", error);
+            });
+        });
+    </script>
 </body>
 </html>
