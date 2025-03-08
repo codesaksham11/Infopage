@@ -5,26 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personalised Info</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0e68c; text-align: center; padding: 20px; margin: 0; }
-        .box { background-color: #ffdab9; padding: 15px; margin: 10px auto; border-radius: 10px; cursor: pointer; max-width: 90%; box-sizing: border-box; }
-        .box:hover { background-color: #ffdead; }
-        .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 15px; }
-        h1 { color: #ff4500; font-size: 1.5rem; }
-        p { font-size: 1rem; line-height: 1.5; margin: 0 10px; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f0e68c; 
+            text-align: center; 
+            padding: 20px; 
+            margin: 0; 
+        }
+        .box { 
+            background-color: #ffdab9; 
+            padding: 15px; 
+            margin: 10px auto; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            max-width: 90%; 
+            box-sizing: border-box; 
+        }
+        .box:hover { 
+            background-color: #ffdead; 
+        }
+        .back { 
+            background-color: #ff9999; 
+            padding: 10px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            display: inline-block; 
+            margin-top: 15px; 
+        }
+        h1 { 
+            color: #ff4500; 
+            font-size: 1.5rem; 
+        }
+        p { 
+            font-size: 1rem; 
+            line-height: 1.5; 
+            margin: 0 10px; 
+        }
+        /* Audio button styling */
+        .audio-button {
+            background-color: #ff4500; /* Matches h1 color */
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            margin: 15px auto;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .audio-button:hover {
+            background-color: #e03e00; /* Darker shade on hover */
+            transform: scale(1.05);
+        }
+        .audio-button:active {
+            transform: scale(0.98);
+        }
+        .audio-button i {
+            margin-right: 8px;
+        }
         @media (max-width: 768px) {
             .box { padding: 10px; font-size: 0.9rem; }
             h1 { font-size: 1.2rem; }
             p { font-size: 0.9rem; }
+            .audio-button { font-size: 0.9rem; padding: 8px 16px; }
         }
     </style>
+    <!-- Font Awesome for the audio icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <h1>Saksham's Secret Stash 🤝</h1>
     <p>Since there are details I cannot share with the general public, here’s extra info for special groups like family or friends. What would you like to explore? 😊</p>
+    
+    <!-- Secret Stash Audio Button -->
+    <button class="audio-button" id="secretStashButton">
+        <i class="fas fa-volume-up"></i> Hear Secret Stash Intro
+    </button>
+    
     <div class="box" onclick="window.location.href='family-personalised.html'">Family 👨‍👩‍👧</div>
     <div class="box" onclick="window.location.href='homie-personalised.html'">Homies 👥</div>
     <div class="box" onclick="window.location.href='school-personalised.html'">School 📚</div>
     <div class="box" onclick="window.location.href='friends-personalised.html'">Friends 🌐</div>
     <div class="back" onclick="window.location.href='index.html'">Back ⬅️</div>
+
+    <!-- Hidden audio element -->
+    <audio id="secretStashAudio" src="images/lv_0_20250308134147.mp3" preload="auto"></audio>
+
+    <script>
+        // Play audio when button is clicked
+        document.getElementById('secretStashButton').addEventListener('click', () => {
+            const secretStashAudio = document.getElementById('secretStashAudio');
+            
+            // Reset the audio to the beginning if it was played before
+            secretStashAudio.currentTime = 0;
+            
+            // Play the secret stash audio
+            secretStashAudio.play().catch(error => {
+                console.log("Audio playback failed:", error);
+            });
+        });
+    </script>
 </body>
 </html>
