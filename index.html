@@ -94,9 +94,6 @@
     <h1>Hi! I'm Saksham's Memory Assistant!👋</h1>
     <p>What do you wanna know about me? Pick a category—it's gonna be fun! 😎</p>
     
-    <!-- Add a visible play button as fallback -->
-    <button id="playButton" class="play-audio-btn">🔊 Click to hear welcome message!</button>
-    
     <!-- Hidden audio element -->
     <audio id="welcomeAudio" src="images/lv_0_20250308114954.mp3" preload="auto"></audio>
     
@@ -115,41 +112,38 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const welcomeAudio = document.getElementById('welcomeAudio');
-            const playButton = document.getElementById('playButton');
             
-            // Try to autoplay (this will likely be blocked)
-            welcomeAudio.play().then(() => {
-                // If autoplay succeeds, hide the button
-                playButton.style.display = 'none';
-            }).catch(error => {
+            // Try to autoplay (this will likely be blocked by most browsers)
+            welcomeAudio.play().catch(error => {
                 console.log("Autoplay blocked by browser:", error);
-                // Keep the button visible for manual play
-                playButton.style.display = 'inline-block';
             });
             
-            // Add click event to button
-            playButton.addEventListener('click', function() {
-                welcomeAudio.play();
-                playButton.style.display = 'none';
-            });
-            
-            // Add user interaction detection
+            // Add user interaction detection to play audio on first interaction
             function tryPlayAudio() {
                 welcomeAudio.play().then(() => {
-                    playButton.style.display = 'none';
-                    // Remove the event listeners once played
+                    // Remove the event listeners once played successfully
                     document.removeEventListener('click', tryPlayAudio);
                     document.removeEventListener('touchstart', tryPlayAudio);
                     document.removeEventListener('keydown', tryPlayAudio);
+                    document.removeEventListener('mousemove', tryPlayAudio);
+                    document.removeEventListener('scroll', tryPlayAudio);
                 }).catch(error => {
                     console.log("Still couldn't play audio:", error);
                 });
             }
             
-            // Try to play audio on any user interaction
+            // Try to play audio on various user interactions
             document.addEventListener('click', tryPlayAudio);
             document.addEventListener('touchstart', tryPlayAudio);
             document.addEventListener('keydown', tryPlayAudio);
+            document.addEventListener('mousemove', tryPlayAudio);
+            document.addEventListener('scroll', tryPlayAudio);
+            
+            // Also try playing when user interacts with any box
+            const boxes = document.querySelectorAll('.box');
+            boxes.forEach(box => {
+                box.addEventListener('mouseenter', tryPlayAudio);
+            });
         });
     </script>
 </body>
