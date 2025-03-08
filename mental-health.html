@@ -9,64 +9,148 @@
         .content-box { background-color: #d4edda; padding: 20px; margin: 10px; border-radius: 10px; }
         .back { background-color: #ff9999; padding: 10px; border-radius: 5px; cursor: pointer; }
         h1 { color: #ff4500; }
-        .audio-player { margin: 20px 0; }
-        .audio-controls { display: flex; justify-content: center; gap: 10px; align-items: center; }
-        .audio-button { background-color: #ff4500; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; }
-        .audio-button:hover { background-color: #e03e00; }
-        .time-display { font-size: 14px; color: #333; }
+        
+        /* Audio Player Styling */
+        .audio-player {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 500px;
+        }
+        
+        .player-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .play-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .time-display {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: #4CAF50;
+            border-radius: 4px;
+            width: 0%;
+        }
+        
+        .player-title {
+            text-align: left;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
     </style>
 </head>
 <body>
     <h1>Mental Health 🧠</h1>
     <div class="content-box">
-        <p>My mental abilities aren’t the strongest these days. 😕 Back in my early school years, though, I did quite well—I even topped my class in third grade and LKG, which felt amazing! 🌟✨ But after that, I never reached first place again. 🥺 It’s not just studies either; I find extra activities and real-life situations tricky too. ⚽📚</p>
-        <p>I was encouraged to focus only on books growing up—no time for playing outside or hanging out with friends. 📖 So, I’ve gathered a lot of knowledge from reading, but not much from life. 🌳 If you ask me how to behave when a cousin visits, I’d struggle to answer. 😅 But if you ask what the study of the liver is called, I’d say “hepatology” without hesitation! 🎯</p>
-        <p>There’s a saying, “You are what you train for,” and it fits me well. ✅ To some, I might seem a little lost because I haven’t had much practice with everyday things—like talking to an aunt. I just don’t have the experience yet. </p>
+        <p>My mental abilities aren't the strongest these days. 😕 Back in my early school years, though, I did quite well—I even topped my class in third grade and LKG, which felt amazing! 🌟✨ But after that, I never reached first place again. 🥺 It's not just studies either; I find extra activities and real-life situations tricky too. ⚽📚</p>
+        <p>I was encouraged to focus only on books growing up—no time for playing outside or hanging out with friends. 📖 So, I've gathered a lot of knowledge from reading, but not much from life. 🌳 If you ask me how to behave when a cousin visits, I'd struggle to answer. 😅 But if you ask what the study of the liver is called, I'd say "hepatology" without hesitation! 🎯</p>
+        <p>There's a saying, "You are what you train for," and it fits me well. ✅ To some, I might seem a little lost because I haven't had much practice with everyday things—like talking to an aunt. I just don't have the experience yet. </p>
     </div>
-
-    <!-- Audio Player Section -->
+    
+    <!-- Audio Player -->
     <div class="audio-player">
-        <audio id="mentalHealthAudio" src="images/lv_0_20250308103344.mp3"></audio>
-        <div class="audio-controls">
-            <button class="audio-button" id="playBtn">Play ▶️</button>
-            <button class="audio-button" id="pauseBtn">Pause ⏸️</button>
-            <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+        <div class="player-title">Listen to audio:</div>
+        <div class="player-controls">
+            <button class="play-btn" id="playBtn">▶</button>
+            <div class="time-display">
+                <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+            </div>
         </div>
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <audio id="audioPlayer" src="images/lv_0_20250308103344.mp3"></audio>
     </div>
-
+    
     <div class="back" onclick="window.location.href='health.html'">Back ⬅️</div>
-
+    
     <script>
-        const audio = document.getElementById('mentalHealthAudio');
+        const audio = document.getElementById('audioPlayer');
         const playBtn = document.getElementById('playBtn');
-        const pauseBtn = document.getElementById('pauseBtn');
-        const timeDisplay = document.getElementById('timeDisplay');
-
-        // Function to format time in MM:SS
+        const progressBar = document.getElementById('progressBar');
+        const progressContainer = document.getElementById('progressContainer');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        
+        // Format time in minutes and seconds
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
-            return `${minutes}:${secs < 10 ? '0' + secs : secs}`;
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
         }
-
-        // Update total duration when audio metadata is loaded
-        audio.addEventListener('loadedmetadata', () => {
-            timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
+        
+        // Update progress bar and time display
+        function updateProgress() {
+            const percent = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = `${percent}%`;
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+        }
+        
+        // Set audio time when clicking on progress bar
+        function setProgress(e) {
+            const width = this.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audio.duration;
+            audio.currentTime = (clickX / width) * duration;
+        }
+        
+        // Toggle play/pause
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerHTML = '❚❚';
+            } else {
+                audio.pause();
+                playBtn.innerHTML = '▶';
+            }
+        }
+        
+        // Event listeners
+        playBtn.addEventListener('click', togglePlay);
+        audio.addEventListener('timeupdate', updateProgress);
+        progressContainer.addEventListener('click', setProgress);
+        
+        // When audio metadata is loaded, display duration
+        audio.addEventListener('loadedmetadata', function() {
+            durationEl.textContent = formatTime(audio.duration);
         });
-
-        // Update current time during playback
-        audio.addEventListener('timeupdate', () => {
-            timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-        });
-
-        // Play button functionality
-        playBtn.addEventListener('click', () => {
-            audio.play();
-        });
-
-        // Pause button functionality
-        pauseBtn.addEventListener('click', () => {
-            audio.pause();
+        
+        // When audio ends, reset button
+        audio.addEventListener('ended', function() {
+            playBtn.innerHTML = '▶';
         });
     </script>
 </body>
