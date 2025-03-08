@@ -66,36 +66,51 @@
             margin-top: 20px;
             border: 2px solid #ff6f61; /* Matching coral border */
         }
-        .play-audio-btn {
+        /* Audio button styling */
+        .audio-button {
             background-color: #ff6f61;
             color: white;
             border: none;
-            border-radius: 20px;
-            padding: 8px 15px;
-            margin: 10px 0;
+            border-radius: 25px;
+            padding: 10px 20px;
+            margin: 15px auto;
+            font-size: 1rem;
             cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        .play-audio-btn:hover {
+        .audio-button:hover {
             background-color: #e55a4d;
             transform: scale(1.05);
+        }
+        .audio-button:active {
+            transform: scale(0.98);
+        }
+        .audio-button i {
+            margin-right: 8px;
         }
         @media (max-width: 768px) {
             .box { padding: 10px; font-size: 0.9rem; }
             h1 { font-size: 1.2rem; }
             p { font-size: 0.9rem; }
             .personal-photo { max-width: 80%; }
+            .audio-button { font-size: 0.9rem; padding: 8px 16px; }
         }
     </style>
+    <!-- Font Awesome for the audio icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <h1>Hi! I'm Saksham's Memory Assistant!👋</h1>
     <p>What do you wanna know about me? Pick a category—it's gonna be fun! 😎</p>
     
-    <!-- Hidden audio element -->
-    <audio id="welcomeAudio" src="images/lv_0_20250308114954.mp3" preload="auto"></audio>
+    <!-- Welcome Audio Button -->
+    <button class="audio-button" id="welcomeButton">
+        <i class="fas fa-volume-up"></i> Hear Welcome Message
+    </button>
     
     <div class="box" onclick="window.location.href='health.html'">Health 💪</div>
     <div class="box" onclick="window.location.href='family.html'">Family 👨‍👩‍👧</div>
@@ -109,40 +124,20 @@
     <img src="images/IMG_20250226_165425.jpg" alt="Saksham" class="personal-photo">
     <div class="box" onclick="window.location.href='trivia.html'">The longer the ride, the more thrilling it gets… and I'm not talking about a trip!</div>
 
+    <!-- Hidden audio element -->
+    <audio id="welcomeAudio" src="images/lv_0_20250308114954.mp3" preload="auto"></audio>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // Play audio when button is clicked
+        document.getElementById('welcomeButton').addEventListener('click', () => {
             const welcomeAudio = document.getElementById('welcomeAudio');
             
-            // Try to autoplay (this will likely be blocked by most browsers)
+            // Reset the audio to the beginning if it was played before
+            welcomeAudio.currentTime = 0;
+            
+            // Play the welcome audio
             welcomeAudio.play().catch(error => {
-                console.log("Autoplay blocked by browser:", error);
-            });
-            
-            // Add user interaction detection to play audio on first interaction
-            function tryPlayAudio() {
-                welcomeAudio.play().then(() => {
-                    // Remove the event listeners once played successfully
-                    document.removeEventListener('click', tryPlayAudio);
-                    document.removeEventListener('touchstart', tryPlayAudio);
-                    document.removeEventListener('keydown', tryPlayAudio);
-                    document.removeEventListener('mousemove', tryPlayAudio);
-                    document.removeEventListener('scroll', tryPlayAudio);
-                }).catch(error => {
-                    console.log("Still couldn't play audio:", error);
-                });
-            }
-            
-            // Try to play audio on various user interactions
-            document.addEventListener('click', tryPlayAudio);
-            document.addEventListener('touchstart', tryPlayAudio);
-            document.addEventListener('keydown', tryPlayAudio);
-            document.addEventListener('mousemove', tryPlayAudio);
-            document.addEventListener('scroll', tryPlayAudio);
-            
-            // Also try playing when user interacts with any box
-            const boxes = document.querySelectorAll('.box');
-            boxes.forEach(box => {
-                box.addEventListener('mouseenter', tryPlayAudio);
+                console.log("Audio playback failed:", error);
             });
         });
     </script>
