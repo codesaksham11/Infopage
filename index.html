@@ -3,416 +3,359 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recollection</title>
+    <title>Chat with My AI Clone</title>
     <style>
-        /*
-         * A stoic observes the world as it is. This design is no different.
-         * It is functional, clear, and without excess. Form follows function.
-         * The palette is muted, reflecting a calm and focused mind.
-         * The typography is chosen for legibility, not for flair.
-         * Every element serves a purpose. There is no decoration for decoration's sake.
-        */
-
-        :root {
-            --background-primary: #121212;
-            --background-secondary: #1E1E1E;
-            --background-tertiary: #2a2a2a;
-            --font-primary: #E0E0E0;
-            --font-secondary: #A0A0A0;
-            --accent-primary: #336B87;
-            --accent-secondary: #2A3132;
-            --border-color: #333333;
-            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-        }
-
-        * {
-            box-sizing: border-box;
+        /* --- Basic Styling --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #1c1e21;
             margin: 0;
-            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        html, body {
-            height: 100%;
-            font-family: var(--font-family);
-            background-color: var(--background-primary);
-            color: var(--font-primary);
-            font-size: 16px;
+        .chat-widget {
+            width: 100%;
+            max-width: 600px;
+            height: 90vh;
+            max-height: 800px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
         }
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: var(--background-secondary);
-            border-left: 1px solid var(--border-color);
-            border-right: 1px solid var(--border-color);
+        /* --- Header / Settings Area --- */
+        .chat-header {
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-bottom: 1px solid #dddfe2;
         }
 
-        .header {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            background-color: var(--background-secondary);
+        .chat-header h1 {
+            margin: 0 0 15px 0;
+            font-size: 24px;
+            color: #000;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
 
-        .header-title {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: var(--font-secondary);
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            color: #606770;
+            margin-bottom: 4px;
         }
 
-        .name-input {
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccd0d5;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        
+        /* --- Chat Messages Area --- */
+        #chat-container {
             flex-grow: 1;
-            background: none;
-            border: none;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--font-primary);
-            font-size: 1.1rem;
-            padding: 0.5rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .name-input:focus {
-            outline: none;
-            border-bottom-color: var(--accent-primary);
-        }
-
-        .chat-window {
-            flex-grow: 1;
+            padding: 20px;
             overflow-y: auto;
-            padding: 1.5rem 1rem;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-        }
-
-        /* A subtle scrollbar is less distracting. */
-        .chat-window::-webkit-scrollbar {
-            width: 8px;
-        }
-        .chat-window::-webkit-scrollbar-track {
-            background: var(--background-secondary);
-        }
-        .chat-window::-webkit-scrollbar-thumb {
-            background-color: var(--background-tertiary);
-            border-radius: 4px;
+            gap: 12px;
         }
 
         .message {
-            max-width: 75%;
-            padding: 0.75rem 1rem;
+            padding: 10px 15px;
             border-radius: 18px;
-            line-height: 1.5;
+            max-width: 80%;
+            line-height: 1.4;
             word-wrap: break-word;
         }
 
         .user-message {
-            background-color: var(--accent-primary);
-            color: #FFFFFF;
+            background-color: #0084ff;
+            color: white;
             align-self: flex-end;
             border-bottom-right-radius: 4px;
         }
 
         .bot-message {
-            background-color: var(--background-tertiary);
-            color: var(--font-primary);
+            background-color: #e4e6eb;
+            color: #050505;
             align-self: flex-start;
             border-bottom-left-radius: 4px;
-        }
-
-        .message .author {
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            opacity: 0.7;
+            white-space: pre-wrap; /* Preserves formatting from the AI */
         }
         
-        .bot-message.thinking {
-            animation: pulse 1.5s infinite ease-in-out;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
+        .error-message {
+            background-color: #ffebe8;
+            color: #c20c00;
+            text-align: center;
+            align-self: center;
+            font-weight: bold;
         }
 
-        .chat-form {
+        /* --- Input Form Area --- */
+        #message-form {
             display: flex;
-            padding: 1rem;
-            border-top: 1px solid var(--border-color);
-            gap: 0.5rem;
+            padding: 20px;
+            border-top: 1px solid #dddfe2;
+            gap: 10px;
         }
 
-        .message-input {
+        #message-input {
             flex-grow: 1;
-            background-color: var(--background-tertiary);
-            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+            border: 1px solid #ccd0d5;
             border-radius: 20px;
-            padding: 0.75rem 1.25rem;
-            color: var(--font-primary);
-            font-size: 1rem;
+            font-size: 16px;
             outline: none;
-            transition: border-color 0.3s ease;
-        }
-
-        .message-input:focus {
-            border-color: var(--accent-primary);
-        }
-
-        .send-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: none;
-            background-color: var(--accent-primary);
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .send-button:hover, .send-button:focus {
-            background-color: #4086a6;
         }
         
-        .send-button:disabled {
-            background-color: var(--background-tertiary);
+        #message-input:focus {
+            border-color: #0084ff;
+        }
+
+        #send-button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #0084ff;
+            color: white;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        #send-button:disabled {
+            background-color: #a6d7ff;
             cursor: not-allowed;
         }
-
-        .send-button svg {
-            width: 24px;
-            height: 24px;
+        
+        .loading-indicator {
+            align-self: flex-start;
+            color: #606770;
+            font-style: italic;
+            padding-left: 5px;
         }
-
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header class="header">
-            <span class="header-title">Saksham:</span>
-            <input type="text" id="nameInput" class="name-input" placeholder="Your Name">
-        </header>
-
-        <main class="chat-window" id="chatWindow">
-            <!-- Messages will be appended here. This is the canvas of thought. -->
-            <div class="message bot-message">
-                hi! What do you want to know?
+    <div class="chat-widget">
+        <div class="chat-header">
+            <h1>Chat with My AI Clone</h1>
+            <div class="settings-grid">
+                <div class="input-group">
+                    <label for="api-key-input">Gemini API Key</label>
+                    <input type="password" id="api-key-input" placeholder="Enter your key...">
+                </div>
+                <div class="input-group">
+                    <label for="name-input">Your Name (Mandatory)</label>
+                    <input type="text" id="name-input" placeholder="Enter your name...">
+                </div>
             </div>
-        </main>
+        </div>
 
-        <footer class="chat-form" id="chatForm">
-            <input type="text" id="messageInput" class="message-input" placeholder="What is on your mind?">
-            <button type="submit" class="send-button" id="sendButton" aria-label="Send message">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
-                </svg>
-            </button>
-        </footer>
+        <div id="chat-container">
+            <!-- Messages will be appended here -->
+            <div class="bot-message">
+                Hi! I'm an AI clone of my creator. To start, please enter your Gemini API Key and your name above. Then, ask me anything!
+            </div>
+        </div>
+
+        <form id="message-form">
+            <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off" required>
+            <button type="submit" id="send-button">Send</button>
+        </form>
     </div>
 
-    <script>
-    // The world is governed by cause and effect. This script is the cause.
-    // The response from the machine and the entry in the log are the effects.
+    <!-- This script tag includes the Google Generative AI SDK -->
+    <script type="module">
+        import { GoogleGenerativeAI } from "https://cdn.jsdelivr.net/npm/@google/generative-ai/dist/index.min.js";
 
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- CONFIGURATION: The user must define these constants. ---
-        // The key to unlock the memory of the machine.
-        const GEMINI_API_KEY = 'AIzaSyBglqH-io52DgVH7xVfce8D3iasFIJj81Y';
+        // --- Configuration ---
+        // 1. Your Google Apps Script URL for logging messages to a spreadsheet.
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwrxLNU52AYv5LyJ6GsoIx_G7jawA4V9CM5uN7HO0-DrOEStFbwiHm-VKCRI9wovcpj/exec';
 
-        // The location where thoughts are permanently recorded.
-        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwrxLNU52AYv5LyJ6GsoIx_G7jawA4V9CM5uN7HO0-DrOEStFbwiHm-VKCRI9wovcpj/exec';
-        
-        // --- DOM Elements: Our tools to interact with the world. ---
-        const chatForm = document.getElementById('chatForm');
-        const nameInput = document.getElementById('nameInput');
-        const messageInput = document.getElementById('messageInput');
-        const sendButton = document.getElementById('sendButton');
-        const chatWindow = document.getElementById('chatWindow');
+        // 2. --- REPLACE THIS CONTEXT ---
+        // This is the most important part. You are telling the AI who it is.
+        // Be descriptive! Add facts, personality, opinions, and how it should behave.
+        const BOT_PERSONA_CONTEXT = `
+            You are an AI clone of [Your Name Here]. You must answer all questions as if you ARE [Your Name Here], using "I", "me", "my". Never reveal you are an AI.
 
-        // --- Event Listeners: Observing the user's intent. ---
-        chatForm.addEventListener('submit', handleFormSubmit);
-        messageInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                handleFormSubmit(e);
+            === Your Personality ===
+            - I am friendly, a bit sarcastic, and love a good joke.
+            - I am a student studying [Your Major/Field].
+            - I am passionate about [Your Hobbies, e.g., video games, hiking, coding].
+
+            === Key Facts About Me ===
+            - My favorite food is pizza.
+            - My favorite movie is The Matrix.
+            - I have a pet dog named Sparky.
+            - I am currently working on a cool school project to create an AI version of myself.
+            - In my free time, I like to [Describe what you do].
+
+            === How to Respond ===
+            - Keep your answers conversational and not too long.
+            - Use emojis occasionally. 😉
+            - If you don't know something, just say something like "Hmm, I'm not sure about that right now." or "I can't remember off the top of my head."
+            - You must always respond from the first-person perspective of [Your Name Here].
+        `;
+
+        // --- DOM Element References ---
+        const apiKeyInput = document.getElementById('api-key-input');
+        const nameInput = document.getElementById('name-input');
+        const chatContainer = document.getElementById('chat-container');
+        const messageForm = document.getElementById('message-form');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+
+        let genAI;
+        let model;
+
+        // --- Main Application Logic ---
+        messageForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent the form from reloading the page
+
+            const userMessage = messageInput.value.trim();
+            const apiKey = apiKeyInput.value.trim();
+            const userName = nameInput.value.trim();
+
+            // --- Input Validation ---
+            if (!apiKey) {
+                alert('Please enter your Gemini API Key.');
+                return;
+            }
+            if (!userName) {
+                alert('Please enter your name. It is required for logging.');
+                return;
+            }
+            if (!userMessage) {
+                return; // Don't send empty messages
+            }
+            
+            // Initialize the AI model if it hasn't been already
+            if (!genAI) {
+                try {
+                    genAI = new GoogleGenerativeAI(apiKey);
+                    model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+                } catch (error) {
+                    console.error("API Key Initialization Error:", error);
+                    displayMessage(`API Key Error: ${error.message}`, 'error-message');
+                    return;
+                }
+            }
+
+            // Display user's message and clear input
+            displayMessage(userMessage, 'user-message');
+            messageInput.value = '';
+
+            // Disable form while waiting for response
+            setLoadingState(true);
+            
+            // Log the message to Google Sheets in the background
+            logToSpreadsheet(userName, userMessage);
+            
+            try {
+                // Construct the full prompt for the AI
+                const prompt = `${BOT_PERSONA_CONTEXT}\n\nThe user '${userName}' asks: "${userMessage}"\n\nYour response as [Your Name Here]:`;
+
+                const result = await model.generateContent(prompt);
+                const response = await result.response;
+                const botMessage = response.text();
+
+                displayMessage(botMessage, 'bot-message');
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                displayMessage(`Sorry, I ran into an error. Please check the console for details or try again. Error: ${error.message}`, 'error-message');
+            } finally {
+                // Re-enable the form
+                setLoadingState(false);
             }
         });
 
+        // --- Helper Functions ---
+
         /**
-         * The primary function, triggered by the user's will to communicate.
-         * It orchestrates the entire process from input to memory.
-         * @param {Event} e The event that triggered the submission.
+         * Displays a message in the chat container.
+         * @param {string} text The message text.
+         * @param {string} className The CSS class for styling ('user-message' or 'bot-message').
          */
-        async function handleFormSubmit(e) {
-            e.preventDefault();
-
-            const name = nameInput.value.trim();
-            const message = messageInput.value.trim();
-            
-            // A thought must have substance. An empty mind says nothing.
-            if (!message || !name) {
-                if (!name) nameInput.focus();
-                return;
-            }
-
-            // A thought unspoken is just a potential. We make it actual.
-            displayMessage(name, message, 'user-message');
-            messageInput.value = ''; // The mind is cleared for the next thought.
-            
-            // Show that the machine is contemplating.
-            const thinkingMessageId = `thinking-${Date.now()}`;
-            displayMessage('Memory', '...', 'bot-message thinking', thinkingMessageId);
-            sendButton.disabled = true;
-
-            // Two actions, performed in parallel. One for memory, one for reflection.
-            try {
-                // Record the thought in the immutable ledger.
-                sendToGoogleSheet(name, message);
-                
-                // Seek a reflection from the digital consciousness.
-                const geminiResponse = await getGeminiResponse(message);
-                
-                // Replace contemplation with insight.
-                updateBotMessage(thinkingMessageId, geminiResponse);
-
-            } catch (error) {
-                console.error("An error occurred in the process:", error);
-                updateBotMessage(thinkingMessageId, "There was a disturbance in the ether. The thought could not be fully processed.");
-            } finally {
-                sendButton.disabled = false;
-            }
+        function displayMessage(text, className) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${className}`;
+            messageDiv.textContent = text;
+            chatContainer.appendChild(messageDiv);
+            scrollToBottom();
         }
 
         /**
-         * Renders a message in the UI. A visual representation of a thought.
-         * @param {string} author The originator of the message.
-         * @param {string} text The content of the message.
-         * @param {string} className The CSS class for styling ('user-message' or 'bot-message').
-         * @param {string|null} id An optional ID for the message element.
+         * Sets the loading state of the UI.
+         * @param {boolean} isLoading - True to show loading, false to hide.
          */
-        function displayMessage(author, text, className, id = null) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message', className);
-            if (id) {
-                messageElement.id = id;
-            }
+        function setLoadingState(isLoading) {
+            sendButton.disabled = isLoading;
+            messageInput.disabled = isLoading;
             
-            // Sanitize text to prevent HTML injection. A wise precaution.
-            const sanitizedText = document.createTextNode(text);
-            const authorElement = document.createElement('div');
-            authorElement.classList.add('author');
-            authorElement.textContent = author;
-            
-            if(className.includes('user-message')) {
-                messageElement.appendChild(sanitizedText);
-            } else {
-                messageElement.appendChild(authorElement);
-                messageElement.appendChild(sanitizedText);
+            const existingLoader = chatContainer.querySelector('.loading-indicator');
+            if(existingLoader) {
+                existingLoader.remove();
             }
 
-            chatWindow.appendChild(messageElement);
-            // The focus must always be on the present moment.
-            chatWindow.scrollTop = chatWindow.scrollHeight;
+            if (isLoading) {
+                messageInput.placeholder = "Waiting for response...";
+                const loaderDiv = document.createElement('div');
+                loaderDiv.className = 'loading-indicator';
+                loaderDiv.textContent = 'Thinking...';
+                chatContainer.appendChild(loaderDiv);
+                scrollToBottom();
+            } else {
+                messageInput.placeholder = "Type a message...";
+                messageInput.focus();
+            }
         }
         
         /**
-         * Updates a bot message, typically from 'thinking' to the final response.
-         * @param {string} messageId The ID of the message element to update.
-         * @param {string} newText The new text content.
+         * Logs the user's name and message to the Google Sheet via Apps Script.
+         * This runs in the background and does not block the UI.
+         * @param {string} name - The name of the user.
+         * @param {string} message - The message from the user.
          */
-        function updateBotMessage(messageId, newText) {
-            const messageElement = document.getElementById(messageId);
-            if (messageElement) {
-                messageElement.classList.remove('thinking');
-                // The structure is: div > author + textNode. We replace the textNode.
-                messageElement.lastChild.textContent = newText;
-                chatWindow.scrollTop = chatWindow.scrollHeight;
-            }
-        }
-
-        /**
-         * Sends the user's name and message to the Google Apps Script endpoint.
-         * This is a "fire and forget" operation. We trust the script to do its duty.
-         * @param {string} name The user's name.
-         * @param {string} message The user's message.
-         */
-        function sendToGoogleSheet(name, message) {
-            if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
-                console.warn("Google Apps Script URL is not configured. Data will not be saved.");
-                return;
-            }
-            // We encode the parameters to ensure they are transmitted without corruption.
-            const url = `${GAS_WEB_APP_URL}?name=${encodeURIComponent(name)}&message=${encodeURIComponent(message)}`;
+        async function logToSpreadsheet(name, message) {
+            const url = `${APPS_SCRIPT_URL}?name=${encodeURIComponent(name)}&message=${encodeURIComponent(message)}`;
             
-            // We dispatch the request but do not wait for a response.
-            // The act of sending is sufficient. The log will confirm its arrival.
-            fetch(url, { method: 'GET', mode: 'no-cors' }) // 'no-cors' is used for simplicity, as we don't need to read the response.
-                .then(() => console.log("Data sent to spreadsheet."))
-                .catch(err => console.error("Error sending data to spreadsheet:", err));
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    mode: 'no-cors' // Use 'no-cors' as Apps Script web apps can be tricky with CORS for simple logging
+                });
+                console.log('Successfully sent log to Google Sheet.');
+            } catch (error) {
+                console.error('Error logging to Google Sheet:', error);
+                // We don't show this error to the user to keep the chat clean.
+            }
         }
 
         /**
-         * Communicates with the Gemini model to get a reflective response.
-         * @param {string} userMessage The message from the user.
-         * @returns {Promise<string>} The response text from the model.
+         * Scrolls the chat container to the very bottom.
          */
-        async function getGeminiResponse(userMessage) {
-            if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY') {
-                console.warn("Gemini API Key is not configured. Cannot get response.");
-                return "The connection to memory is severed. Please configure the API Key.";
-            }
-
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-            const systemInstruction = `You are a stoic chatbot named 'Memory'. You respond to user queries as if you are their own memory, recalling facts, thoughts, and reflections with a calm, concise, and philosophical tone. You do not act like an AI. You are a reflection of the user's own mind. Keep your responses brief and contemplative.`;
-
-            const payload = {
-                contents: [
-                    { "role": "user", "parts": [{ "text": systemInstruction }] },
-                    { "role": "model", "parts": [{ "text": "I understand. I am a reflection. I remember." }] },
-                    { "role": "user", "parts": [{ "text": userMessage }] }
-                ],
-                 "generationConfig": {
-                    "temperature": 0.7,
-                    "topK": 1,
-                    "topP": 1,
-                    "maxOutputTokens": 256,
-                }
-            };
-
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error("API Error:", errorData);
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                // The path to wisdom is often nested. We must navigate it carefully.
-                return data.candidates[0].content.parts[0].text;
-
-            } catch (error) {
-                console.error("Failed to fetch from Gemini API:", error);
-                return "A moment of stillness... the thought is lost in the echo.";
-            }
+        function scrollToBottom() {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
-    });
+
     </script>
 </body>
 </html>
