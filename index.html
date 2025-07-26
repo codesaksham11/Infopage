@@ -5,174 +5,171 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saksham's World</title>
     
-    <!-- External CSS for styling -->
-    <link rel="stylesheet" href="style.css">
-    
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-<body>
 
     <style>
-    /* --- CSS Variables for Easy Theming --- */
-:root {
-    --bg-color: #f8f9fa; /* Off-white background */
-    --text-color: #212529; /* Dark, readable text */
-    --primary-color: #0056b3; /* A professional, strong blue */
-    --primary-hover-color: #004494; /* Darker blue for hover */
-    --card-bg-color: #ffffff; /* Clean white cards */
-    --card-border-color: #dee2e6; /* Subtle border for cards */
-    --quote-bg-color: #e9ecef; /* Different background for the quote */
-}
+        /* --- CSS Variables for Easy Theming --- */
+        :root {
+            --bg-color: #f8f9fa; /* Off-white background */
+            --text-color: #212529; /* Dark, readable text */
+            --primary-color: #0056b3; /* A professional, strong blue */
+            --primary-hover-color: #004494; /* Darker blue for hover */
+            --card-bg-color: #ffffff; /* Clean white cards */
+            --card-border-color: #dee2e6; /* Subtle border for cards */
+            --quote-bg-color: #e9ecef; /* Different background for the quote */
+        }
 
-/* --- General Body & Typography --- */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 20px;
-    opacity: 0;
-    animation: fadeIn 1s ease-in-out forwards;
-}
+        /* --- General Body & Typography --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-}
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
 
-/* --- Header Styles --- */
-header h1 {
-    color: var(--text-color);
-    font-size: 2rem;
-    margin: 0 0 10px 0;
-    display: inline-block; /* Required for typing animation */
-    overflow: hidden;
-    white-space: nowrap;
-    border-right: 3px solid var(--primary-color);
-    animation: typing 3s steps(40, end), blink 0.75s step-end infinite;
-}
+        /* --- Header Styles --- */
+        header h1 {
+            color: var(--text-color);
+            font-size: 2rem;
+            margin: 0 0 10px 0;
+            display: inline-block; /* Required for typing animation */
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid var(--primary-color);
+            animation: typing 3s steps(40, end), blink 0.75s step-end infinite;
+        }
 
-header p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #6c757d; /* Softer gray for subtitle */
-    margin-bottom: 20px;
-}
+        header p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #6c757d; /* Softer gray for subtitle */
+            margin-bottom: 20px;
+        }
 
-/* --- Navigation Grid --- */
-.navigation-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
-    margin-bottom: 30px;
-}
+        /* --- Navigation Grid --- */
+        .navigation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
 
-.nav-link {
-    background-color: var(--card-bg-color);
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid var(--card-border-color);
-    text-decoration: none;
-    color: var(--text-color);
-    font-size: 1.1rem;
-    font-weight: 500;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-}
+        .nav-link {
+            background-color: var(--card-bg-color);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--card-border-color);
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
 
-.nav-link:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-color: var(--primary-color);
-}
+        .nav-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
 
-/* --- Image & Quote Box --- */
-.personal-photo-container {
-    margin: 20px 0;
-}
+        /* --- Image & Quote Box --- */
+        .personal-photo-container {
+            margin: 20px 0;
+        }
 
-.personal-photo {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    border: 3px solid var(--card-bg-color);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
+        .personal-photo {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 3px solid var(--card-bg-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
 
-.quote-box {
-    display: block;
-    background-color: var(--quote-bg-color);
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 8px;
-    border-left: 5px solid var(--primary-color);
-    text-align: left;
-    font-style: italic;
-    color: #495057;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-}
+        .quote-box {
+            display: block;
+            background-color: var(--quote-bg-color);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary-color);
+            text-align: left;
+            font-style: italic;
+            color: #495057;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
 
-.quote-box:hover {
-    background-color: #dbe4f0;
-}
+        .quote-box:hover {
+            background-color: #dbe4f0;
+        }
 
 
-/* --- Audio Button --- */
-.audio-button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 50px; /* Pill shape */
-    padding: 12px 24px;
-    margin: 15px auto;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
+        /* --- Audio Button --- */
+        .audio-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px; /* Pill shape */
+            padding: 12px 24px;
+            margin: 15px auto;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
 
-.audio-button:hover {
-    background-color: var(--primary-hover-color);
-    transform: scale(1.05);
-}
+        .audio-button:hover {
+            background-color: var(--primary-hover-color);
+            transform: scale(1.05);
+        }
 
-.audio-button:active {
-    transform: scale(0.98);
-}
+        .audio-button:active {
+            transform: scale(0.98);
+        }
 
-.audio-button i {
-    margin-right: 10px;
-}
+        .audio-button i {
+            margin-right: 10px;
+        }
 
-/* --- Animations --- */
-@keyframes fadeIn {
-    to { opacity: 1; }
-}
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
 
-@keyframes typing {
-    from { width: 0; }
-    to { width: 100%; }
-}
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
 
-@keyframes blink {
-    50% { border-color: transparent; }
-}
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
 
-/* --- Responsive Design --- */
-@media (max-width: 768px) {
-    body { padding: 15px; }
-    header h1 { font-size: 1.5rem; }
-    header p { font-size: 1rem; }
-    .nav-link { padding: 15px; font-size: 1rem; }
-    .audio-button { font-size: 0.9rem; padding: 10px 20px; }
-}
-    
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            header h1 { font-size: 1.5rem; }
+            header p { font-size: 1rem; }
+            .nav-link { padding: 15px; font-size: 1rem; }
+            .audio-button { font-size: 0.9rem; padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
 
     <div class="container">
         <header>
@@ -195,13 +192,15 @@ header p {
                 <a href="personalised-info.html" class="nav-link">Saksham's Secret Stash 🤝</a>
                 <a href="fun-facts.html" class="nav-link">Fun Facts 🎉</a>
                 <a href="trivia.html" class="nav-link">Trivia 🧠</a>
-                <!-- New Button as requested -->
                 <a href="xyz.html" class="nav-link">My Life In a Nutshell 📜</a> 
                 <a href="feedback.html" class="nav-link">Feedback 📩</a>
             </nav>
 
             <figure class="personal-photo-container">
-                <img src="images/IMG_20250226_165425.jpg" alt="A photo of Saksham" class="personal-photo">
+                <!-- NOTE: The original path was "images/IMG_20250226_165425.jpg". 
+                     This placeholder is used to ensure an image always shows. 
+                     You can replace it with your original path if the file exists. -->
+                <img src="https://via.placeholder.com/600x400.png?text=Photo+of+Saksham" alt="A photo of Saksham" class="personal-photo">
             </figure>
             
             <a href="trivia.html" class="quote-box">
@@ -211,23 +210,30 @@ header p {
     </div>
 
     <!-- Hidden audio element for the welcome message -->
+    <!-- NOTE: Make sure the path "images/lv_0_20250308114954.mp3" is correct relative to your HTML file. -->
     <audio id="welcomeAudio" src="images/lv_0_20250308114954.mp3" preload="auto"></audio>
 
-    <!-- External JavaScript, deferred to load after the HTML -->
-    
     <script>
-        // Play audio when button is clicked
-        document.getElementById('welcomeButton').addEventListener('click', () => {
+        // Wait for the document to be fully loaded before adding event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const welcomeButton = document.getElementById('welcomeButton');
             const welcomeAudio = document.getElementById('welcomeAudio');
-            
-            // Reset the audio to the beginning if it was played before
-            welcomeAudio.currentTime = 0;
-            
-            // Play the welcome audio
-            welcomeAudio.play().catch(error => {
-                console.log("Audio playback failed:", error);
-            });
+
+            if (welcomeButton && welcomeAudio) {
+                welcomeButton.addEventListener('click', () => {
+                    // Reset the audio to the beginning if it was played before
+                    welcomeAudio.currentTime = 0;
+                    
+                    // Play the welcome audio
+                    welcomeAudio.play().catch(error => {
+                        // This catch block helps handle browser autoplay policies
+                        console.error("Audio playback failed:", error);
+                        alert("Could not play audio. Please check browser permissions.");
+                    });
+                });
+            }
         });
     </script>
+    
 </body>
 </html>
