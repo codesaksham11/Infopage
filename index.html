@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recollection</title>
+    <style>
+        /*
+         * A stoic observes the world as it is. This design is no different.
+         * It is functional, clear, and without excess. Form follows function.
+         * The palette is muted, reflecting a calm and focused mind.
+         * The typography is chosen for legibility, not for flair.
+         * Every element serves a purpose. There is no decoration for decoration's sake.
+        */
+
+        :root {
+            --background-primary: #121212;
+            --background-secondary: #1E1E1E;
+            --background-tertiary: #2a2a2a;
+            --font-primary: #E0E0E0;
+            --font-secondary: #A0A0A0;
+            --accent-primary: #336B87;
+            --accent-secondary: #2A3132;
+            --border-color: #333333;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: var(--font-family);
+            background-color: var(--background-primary);
+            color: var(--font-primary);
+            font-size: 16px;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--background-secondary);
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+        }
+
+        .header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background-color: var(--background-secondary);
+        }
+
+        .header-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--font-secondary);
+        }
+
+        .name-input {
+            flex-grow: 1;
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--font-primary);
+            font-size: 1.1rem;
+            padding: 0.5rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-bottom-color: var(--accent-primary);
+        }
+
+        .chat-window {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* A subtle scrollbar is less distracting. */
+        .chat-window::-webkit-scrollbar {
+            width: 8px;
+        }
+        .chat-window::-webkit-scrollbar-track {
+            background: var(--background-secondary);
+        }
+        .chat-window::-webkit-scrollbar-thumb {
+            background-color: var(--background-tertiary);
+            border-radius: 4px;
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 0.75rem 1rem;
+            border-radius: 18px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background-color: var(--accent-primary);
+            color: #FFFFFF;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot-message {
+            background-color: var(--background-tertiary);
+            color: var(--font-primary);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message .author {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            opacity: 0.7;
+        }
+        
+        .bot-message.thinking {
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .chat-form {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            gap: 0.5rem;
+        }
+
+        .message-input {
+            flex-grow: 1;
+            background-color: var(--background-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0.75rem 1.25rem;
+            color: var(--font-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .message-input:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .send-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background-color: var(--accent-primary);
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .send-button:hover, .send-button:focus {
+            background-color: #4086a6;
+        }
+        
+        .send-button:disabled {
+            background-color: var(--background-tertiary);
+            cursor: not-allowed;
+        }
+
+        .send-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <span class="header-title">Saksham:</span>
+            <input type="text" id="nameInput" class="name-input" placeholder="Your Name">
+        </header>
+
+        <main class="chat-window" id="chatWindow">
+            <!-- Messages will be appended here. This is the canvas of thought. -->
+            <div class="message bot-message">
+                hi! What do you want to know?
+            </div>
+        </main>
+
+        <footer class="chat-form" id="chatForm">
+            <input type="text" id="messageInput" class="message-input" placeholder="What is on your mind?">
+            <button type="submit" class="send-button" id="sendButton" aria-label="Send message">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                </svg>
+            </button>
+        </footer>
+    </div>
+
+    <script>
+    // The world is governed by cause and effect. This script is the cause.
+    // The response from the machine and the entry in the log are the effects.
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- CONFIGURATION: The user must define these constants. ---
+        // The key to unlock the memory of the machine.
+        const GEMINI_API_KEY = 'AIzaSyBglqH-io52DgVH7xVfce8D3iasFIJj81Y';
+
+        // The location where thoughts are permanently recorded.
+        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwrxLNU52AYv5LyJ6GsoIx_G7jawA4V9CM5uN7HO0-DrOEStFbwiHm-VKCRI9wovcpj/exec';
+        
+        // --- DOM Elements: Our tools to interact with the world. ---
+        const chatForm = document.getElementById('chatForm');
+        const nameInput = document.getElementById('nameInput');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const chatWindow = document.getElementById('chatWindow');
+
+        // --- Event Listeners: Observing the user's intent. ---
+        chatForm.addEventListener('submit', handleFormSubmit);
+        messageInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                handleFormSubmit(e);
+            }
+        });
+
+        /**
+         * The primary function, triggered by the user's will to communicate.
+         * It orchestrates the entire process from input to memory.
+         * @param {Event} e The event that triggered the submission.
+         */
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const name = nameInput.value.trim();
+            const message = messageInput.value.trim();
+            
+            // A thought must have substance. An empty mind says nothing.
+            if (!message || !name) {
+                if (!name) nameInput.focus();
+                return;
+            }
+
+            // A thought unspoken is just a potential. We make it actual.
+            displayMessage(name, message, 'user-message');
+            messageInput.value = ''; // The mind is cleared for the next thought.
+            
+            // Show that the machine is contemplating.
+            const thinkingMessageId = `thinking-${Date.now()}`;
+            displayMessage('Memory', '...', 'bot-message thinking', thinkingMessageId);
+            sendButton.disabled = true;
+
+            // Two actions, performed in parallel. One for memory, one for reflection.
+            try {
+                // Record the thought in the immutable ledger.
+                sendToGoogleSheet(name, message);
+                
+                // Seek a reflection from the digital consciousness.
+                const geminiResponse = await getGeminiResponse(message);
+                
+                // Replace contemplation with insight.
+                updateBotMessage(thinkingMessageId, geminiResponse);
+
+            } catch (error) {
+                console.error("An error occurred in the process:", error);
+                updateBotMessage(thinkingMessageId, "There was a disturbance in the ether. The thought could not be fully processed.");
+            } finally {
+                sendButton.disabled = false;
+            }
+        }
+
+        /**
+         * Renders a message in the UI. A visual representation of a thought.
+         * @param {string} author The originator of the message.
+         * @param {string} text The content of the message.
+         * @param {string} className The CSS class for styling ('user-message' or 'bot-message').
+         * @param {string|null} id An optional ID for the message element.
+         */
+        function displayMessage(author, text, className, id = null) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', className);
+            if (id) {
+                messageElement.id = id;
+            }
+            
+            // Sanitize text to prevent HTML injection. A wise precaution.
+            const sanitizedText = document.createTextNode(text);
+            const authorElement = document.createElement('div');
+            authorElement.classList.add('author');
+            authorElement.textContent = author;
+            
+            if(className.includes('user-message')) {
+                messageElement.appendChild(sanitizedText);
+            } else {
+                messageElement.appendChild(authorElement);
+                messageElement.appendChild(sanitizedText);
+            }
+
+            chatWindow.appendChild(messageElement);
+            // The focus must always be on the present moment.
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+        
+        /**
+         * Updates a bot message, typically from 'thinking' to the final response.
+         * @param {string} messageId The ID of the message element to update.
+         * @param {string} newText The new text content.
+         */
+        function updateBotMessage(messageId, newText) {
+            const messageElement = document.getElementById(messageId);
+            if (messageElement) {
+                messageElement.classList.remove('thinking');
+                // The structure is: div > author + textNode. We replace the textNode.
+                messageElement.lastChild.textContent = newText;
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }
+        }
+
+        /**
+         * Sends the user's name and message to the Google Apps Script endpoint.
+         * This is a "fire and forget" operation. We trust the script to do its duty.
+         * @param {string} name The user's name.
+         * @param {string} message The user's message.
+         */
+        function sendToGoogleSheet(name, message) {
+            if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+                console.warn("Google Apps Script URL is not configured. Data will not be saved.");
+                return;
+            }
+            // We encode the parameters to ensure they are transmitted without corruption.
+            const url = `${GAS_WEB_APP_URL}?name=${encodeURIComponent(name)}&message=${encodeURIComponent(message)}`;
+            
+            // We dispatch the request but do not wait for a response.
+            // The act of sending is sufficient. The log will confirm its arrival.
+            fetch(url, { method: 'GET', mode: 'no-cors' }) // 'no-cors' is used for simplicity, as we don't need to read the response.
+                .then(() => console.log("Data sent to spreadsheet."))
+                .catch(err => console.error("Error sending data to spreadsheet:", err));
+        }
+
+        /**
+         * Communicates with the Gemini model to get a reflective response.
+         * @param {string} userMessage The message from the user.
+         * @returns {Promise<string>} The response text from the model.
+         */
+        async function getGeminiResponse(userMessage) {
+            if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY') {
+                console.warn("Gemini API Key is not configured. Cannot get response.");
+                return "The connection to memory is severed. Please configure the API Key.";
+            }
+
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+            const systemInstruction = `You are a stoic chatbot named 'Memory'. You respond to user queries as if you are their own memory, recalling facts, thoughts, and reflections with a calm, concise, and philosophical tone. You do not act like an AI. You are a reflection of the user's own mind. Keep your responses brief and contemplative.`;
+
+            const payload = {
+                contents: [
+                    { "role": "user", "parts": [{ "text": systemInstruction }] },
+                    { "role": "model", "parts": [{ "text": "I understand. I am a reflection. I remember." }] },
+                    { "role": "user", "parts": [{ "text": userMessage }] }
+                ],
+                 "generationConfig": {
+                    "temperature": 0.7,
+                    "topK": 1,
+                    "topP": 1,
+                    "maxOutputTokens": 256,
+                }
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("API Error:", errorData);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                // The path to wisdom is often nested. We must navigate it carefully.
+                return data.candidates[0].content.parts[0].text;
+
+            } catch (error) {
+                console.error("Failed to fetch from Gemini API:", error);
+                return "A moment of stillness... the thought is lost in the echo.";
+            }
+        }
+    });
+    </script>
+</body>
+</html>
